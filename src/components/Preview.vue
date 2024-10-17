@@ -1,9 +1,10 @@
 <template>
   <div>
     <h1>CV Preview</h1>
-    <button @click="printCV">Print CV</button> <!-- Add this print button -->
+   <!-- <button @click="printCV">Print CV</button> <!-- Add this print button -->
+    <button @click="exportToPDF">Print CV</button> <!-- Add this print button -->
     <!-- This is the preview of the CV -->
-    <div id="cv-preview">
+    <div id="cv-preview" ref="cvPreview">
       <div class="column left">
         <div id="personal-section">
           <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic" />
@@ -60,6 +61,7 @@
 import { ProfileToRender } from '../types';
 import { defineProps } from 'vue';
 import { formatDate } from '../helpers';
+import html2pdf from 'html2pdf.js';
 
 // Define props to receive the ProfileToRender data
 const props = defineProps<{
@@ -69,14 +71,32 @@ const props = defineProps<{
 const printCV = () => {
   window.print(); // Trigger the print dialog
 };
+
+const exportToPDF = () => { 
+  const element = document.querySelector("#cv-preview"); // Select the specific component 
+  const options = { 
+    margin: 0,
+    padding: 0,
+    filename: 'cv-preview.pdf', 
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 }, 
+    jsPDF: { unit: 'mm', format: 'a3', orientation: 'landscape' } 
+  }; 
+  
+  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it 
+  };
+
 </script>
-<style scoped>
+
+
+
+<style>
 /* Basic styling for on-screen preview */
 #cv-preview {
   /* A4 landscape width */
   width: 297mm;
   /* A4 landscape height */
-  height: 210mm;
+  height: 200mm;
   margin: 20px auto;
   /* Padding inside the CV */
   padding: 20mm;
@@ -89,6 +109,7 @@ const printCV = () => {
   column-gap: 5mm;
   color: black;
   text-align: start;
+  overflow-y: hidden;
 }
 
 .column {
@@ -223,20 +244,17 @@ const printCV = () => {
     margin: 0;
   }
 
-  *:not(#cv-preview *) {
-    background-color: red;
-  }
+  /* body:not(#cv-preview), body *:not(#cv-preview *) {
+    display: none;
+  } */
 
-  #cv-preview, #cv-preview * {
-    display: block !important;
-  }
+
+
 
   #cv-preview {
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
-    width: 297mm;
-    height: 210mm;
+    border: 2px solid red;
+    display: block;
+
   }
   
 }
