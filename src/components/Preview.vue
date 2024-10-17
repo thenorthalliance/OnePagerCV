@@ -1,13 +1,16 @@
 <template>
   <div>
     <h1>CV Preview</h1>
-   <!-- <button @click="printCV">Print CV</button> <!-- Add this print button -->
-    <button @click="exportToPDF">Print CV</button> <!-- Add this print button -->
+    <!-- <button @click="printCV">Print CV</button> <!-- Add this print button -->
+    <button @click="exportToPDF">Print CV</button>
+    <!-- Add this print button -->
     <!-- This is the preview of the CV -->
     <div id="cv-preview" ref="cvPreview">
       <div class="column left">
         <div id="personal-section">
-          <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic" />
+          <div>
+            <ProfilePicture />
+          </div>
           <div>
             <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
             <h2>{{ profile.title }}</h2>
@@ -35,9 +38,18 @@
         <div id="experience-section">
           <h3>Utvalgt erfaring</h3>
           <ul>
-            <li v-for="experience in profile.experiences" :key="experience.projectName">
-              <h4>{{ experience.startDate ? formatDate(experience.startDate) : '' }} - {{ experience.endDate ?
-                formatDate(experience.endDate) : '' }}: {{ experience.projectName }}</h4>
+            <li
+              v-for="experience in profile.experiences"
+              :key="experience.projectName"
+            >
+              <h4>
+                {{
+                  experience.startDate ? formatDate(experience.startDate) : ""
+                }}
+                -
+                {{ experience.endDate ? formatDate(experience.endDate) : "" }}:
+                {{ experience.projectName }}
+              </h4>
               <p>{{ experience.description }}</p>
             </li>
           </ul>
@@ -46,7 +58,10 @@
         <div id="qualifications-section">
           <h3>Utdanning, kurs og sertifiseringer</h3>
           <ul>
-            <li v-for="qualification in profile.qualifications" :key="qualification.detail">
+            <li
+              v-for="qualification in profile.qualifications"
+              :key="qualification.detail"
+            >
               <Strong>{{ qualification.label }}:</Strong>
               <p>{{ qualification.detail }}</p>
             </li>
@@ -58,10 +73,11 @@
 </template>
 
 <script setup lang="ts">
-import { ProfileToRender } from '../types';
-import { defineProps } from 'vue';
-import { formatDate } from '../helpers';
-import html2pdf from 'html2pdf.js';
+import { ProfileToRender } from "../types";
+import { defineProps } from "vue";
+import { formatDate } from "../helpers";
+import ProfilePicture from "./ProfilePicture.vue";
+import html2pdf from "html2pdf.js";
 
 // Define props to receive the ProfileToRender data
 const props = defineProps<{
@@ -72,25 +88,22 @@ const printCV = () => {
   window.print(); // Trigger the print dialog
 };
 
-const exportToPDF = () => { 
-  const element = document.querySelector("#cv-preview"); // Select the specific component 
-  const options = { 
+const exportToPDF = () => {
+  const element = document.querySelector("#cv-preview"); // Select the specific component
+  const options = {
     margin: 0,
     padding: 0,
-    filename: 'cv-preview.pdf', 
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 }, 
-    jsPDF: { unit: 'mm', format: 'a3', orientation: 'landscape' } 
-  }; 
-  
-  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it 
+    filename: "cv-preview.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "mm", format: "a3", orientation: "landscape" },
   };
 
+  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it
+};
 </script>
 
-
-
-<style>
+<style scoped>
 /* Basic styling for on-screen preview */
 #cv-preview {
   /* A4 landscape width */
@@ -127,7 +140,6 @@ const exportToPDF = () => {
 #personal-section {
   width: 100%;
   height: 120px;
-  background-color: #f0f0f0;
   margin-top: 10mm;
   display: flex;
   column-gap: 10mm;
@@ -236,27 +248,4 @@ const exportToPDF = () => {
     }
   }
 }
-
-/* Print-Specific Styles */
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 0;
-  }
-
-  /* body:not(#cv-preview), body *:not(#cv-preview *) {
-    display: none;
-  } */
-
-
-
-
-  #cv-preview {
-    border: 2px solid red;
-    display: block;
-
-  }
-  
-}
 </style>
-
