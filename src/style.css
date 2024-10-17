@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #645E57;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -55,10 +55,13 @@ h3 {
 }
 
 p {
-  font-size: 1em;
-  font-weight: 400;
-  text-align: left;
+  color: var(--Black, #323231);
   font-family: NoAAftenScreen;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
 }
 
 button {
@@ -86,8 +89,7 @@ button:focus-visible {
 
 #app {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0 auto 0 10rem;
   text-align: center;
 }
 

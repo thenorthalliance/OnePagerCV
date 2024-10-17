@@ -1,75 +1,41 @@
 <template>
   <div>
     <h1>CV Preview</h1>
-   <!-- <button @click="printCV">Print CV</button> <!-- Add this print button -->
-    <button @click="exportToPDF">Print CV</button> <!-- Add this print button -->
+    <button @click="exportToPDF">Print CV</button> 
+
     <!-- This is the preview of the CV -->
-    <div id="cv-preview" ref="cvPreview">
-      <div class="column left">
-        <div id="personal-section">
-          <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic" />
-          <div>
-            <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-            <h2>{{ profile.title }}</h2>
-          </div>
-        </div>
-
-        <div id="skills-section">
-          <h2>Expertise innen</h2>
-          <ul>
-            <li v-for="skill in profile.skills" :key="skill">{{ skill }}</li>
-          </ul>
-        </div>
-
-        <div id="about-section">
-          <h2>Om {{ profile.firstName }}</h2>
-          <p>{{ profile.bio }}</p>
-          <div>
-            <span>f. {{ profile.birthYear }}</span>
-            <span>{{ profile.placeOfResidence }}</span>
-          </div>
-        </div>
+    <div id="layout" ref="cvPreview">
+      
+      <div class="header">
+          <p>NoA Ignite konsulentprofil</p>
       </div>
 
-      <div class="column right">
-        <div id="experience-section">
-          <h3>Utvalgt erfaring</h3>
-          <ul>
-            <li v-for="experience in profile.experiences" :key="experience.projectName">
-              <h4>{{ experience.startDate ? formatDate(experience.startDate) : '' }} - {{ experience.endDate ?
-                formatDate(experience.endDate) : '' }}: {{ experience.projectName }}</h4>
-              <p>{{ experience.description }}</p>
-            </li>
-          </ul>
+      <div class="main">
+        <AboutColumn :profile="profile" />
+        <ExperienceColumn :profile="profile" />
+      </div>
+
+       <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
+       <div>
+            <p>www.noaignite.com</p>
         </div>
 
-        <div id="qualifications-section">
-          <h3>Utdanning, kurs og sertifiseringer</h3>
-          <ul>
-            <li v-for="qualification in profile.qualifications" :key="qualification.detail">
-              <Strong>{{ qualification.label }}:</Strong>
-              <p>{{ qualification.detail }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import AboutColumn from './AboutColumn/AboutColumn.vue';
+import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
-import { defineProps } from 'vue';
-import { formatDate } from '../helpers';
 import html2pdf from 'html2pdf.js';
 
-// Define props to receive the ProfileToRender data
 defineProps<{
   profile: ProfileToRender;
 }>();
 
 const exportToPDF = () => { 
-  const element = document.querySelector("#cv-preview"); // Select the specific component 
+  const element = document.querySelector("#layout"); // Select the specific component 
   const options = { 
     margin: 0,
     padding: 0,
@@ -87,172 +53,30 @@ const exportToPDF = () => {
 
 
 <style>
-/* Basic styling for on-screen preview */
-#cv-preview {
-  /* A4 landscape width */
-  width: 297mm;
-  /* A4 landscape height */
-  height: 200mm;
-  margin: 20px auto;
-  /* Padding inside the CV */
-  padding: 20mm;
-  background-color: white;
-  font-family: Arial, sans-serif;
-
-  /* For better UX, add a shadow so it looks like a real sheet */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  column-gap: 5mm;
-  color: black;
-  text-align: start;
-  overflow-y: hidden;
-}
-
-.column {
-  width: 50%;
-  height: 100%;
+#layout {
+  width: 80vw;
+  max-width: 1920px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--White, #FFF);
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); 
+}
+.header{
+  align-self: flex-start;
 }
 
-.right {
-  background-color: aqua;
-  padding: 0 1em;
-}
-
-#personal-section {
-  width: 100%;
-  height: 120px;
-  background-color: #f0f0f0;
-  margin-top: 10mm;
+.main {
   display: flex;
-  column-gap: 10mm;
-
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  h1,
-  h2 {
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  h2 {
-    color: blue;
-  }
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  align-self: stretch;
 }
 
-#skills-section {
-  height: 140px;
-
-  h2 {
-    color: blue;
-    font-size: smaller;
-  }
-
-  ul {
-    padding: 0;
-    display: flex;
-    gap: 2mm;
-    flex-wrap: wrap;
-
-    li {
-      padding: 0.5em 1em;
-      border: 1px solid blue;
-      border-radius: 25px;
-      font-size: small;
-    }
-  }
-}
-
-#about-section {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-
-  h2 {
-    color: blue;
-    font-size: smaller;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  div {
-    margin-top: auto;
-    display: flex;
-    column-gap: 1rem;
-    color: gray;
-    font-size: smaller;
-  }
-}
-
-#experience-section {
-  ul {
-    padding: 0;
-
-    li {
-      margin-bottom: 1rem;
-
-      h4 {
-        margin: 0;
-        font-size: smaller;
-      }
-
-      p {
-        margin: 0;
-        font-size: smaller;
-      }
-    }
-  }
-}
-
-#qualifications-section {
-  ul {
-    padding: 0;
-
-    li {
-      margin-bottom: 1rem;
-      display: flex;
-      column-gap: 0.5em;
-
-      strong {
-        font-size: smaller;
-      }
-
-      p {
-        margin: 0;
-        font-size: smaller;
-      }
-    }
-  }
-}
-
-/* Print-Specific Styles */
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 0;
-  }
-
-  /* body:not(#cv-preview), body *:not(#cv-preview *) {
-    display: none;
-  } */
-
-
-
-
-  #cv-preview {
-    border: 2px solid red;
-    display: block;
-
-  }
-  
-}
 </style>
 
