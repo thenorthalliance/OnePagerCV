@@ -40,6 +40,27 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0;
+  text-align: left;
+  font-family: TiemposFineLight;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0;
+  font-family: NoAAftenScreenBold;
+}
+
+p {
+  font-size: 1em;
+  font-weight: 400;
+  text-align: left;
+  font-family: NoAAftenScreen;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -81,4 +102,34 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face{
+  font-family: NoAAftenScreen;
+  src: local("NoAAftenScreen"),
+  url('./assets/fonts/NoA-Aften-Screen.ttf')
+}
+
+@font-face{
+font-family: NoAAftenScreenItalic;
+src:local("NoAAftenScreenItalic"),
+url('./assets/fonts/NoA-Aften-Screen-Italic.ttf')
+}
+
+@font-face{
+font-family: NoAAftenScreenBold;
+src: local("NoAAftenScreenBold"),
+url('./assets/fonts/NoA-Aften-Screen-Bold.ttf')
+}
+
+@font-face{
+font-family: TiemposFineLight;
+src: local("TiemposFineLight"),
+url('./assets/fonts/TiemposFine-Light.otf')
+}
+
+@font-face{
+font-family: TiemposFineLightItalic;
+src: local("TiemposFineLightItalic"),
+url('./assets/fonts/TiemposFine-LightItalic.otf')
 }

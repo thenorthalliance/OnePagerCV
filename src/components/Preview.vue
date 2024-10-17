@@ -64,13 +64,9 @@ import { formatDate } from '../helpers';
 import html2pdf from 'html2pdf.js';
 
 // Define props to receive the ProfileToRender data
-const props = defineProps<{
+defineProps<{
   profile: ProfileToRender;
 }>();
-
-const printCV = () => {
-  window.print(); // Trigger the print dialog
-};
 
 const exportToPDF = () => { 
   const element = document.querySelector("#cv-preview"); // Select the specific component 
