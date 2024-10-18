@@ -25,5 +25,6 @@ export const formatDate = (date: Date): string => {
   return date.toLocaleDateString("en-GB", {
     year: "2-digit",
     month: "2-digit",
-  });
+  })
+  .replace(/\//g, "."); //replace / with .
 };

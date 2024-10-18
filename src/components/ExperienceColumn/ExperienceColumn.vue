@@ -16,7 +16,7 @@
       <h2>Utdanning, kurs og sertifiseringer</h2>
       <ul>
         <li v-for="qualification in profile.qualifications" :key="qualification.detail">
-          <strong>{{ qualification.label }}:</strong>
+          <h3>{{ qualification.label }}:</h3>
           <p>{{ qualification.detail }}</p>
         </li>
       </ul>
@@ -52,25 +52,25 @@
 }
 
 #experience-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  gap: 1rem;
+
   ul {
+    gap: 1rem;
     padding: 0;
 
     li {
-      margin-bottom: 1rem;
-
-      h4 {
-        margin: 0;
-        font-size: smaller;
+      margin-bottom: 1.4rem;
+      
+      h3 {
+        margin: 0 0 0.6rem 0;
+        line-height: normal;
+        text-align: left;
       }
 
       p {
         margin: 0;
-        font-size: smaller;
+        letter-spacing: 1.2px;
+        line-height: 40px;
+        text-align: left;
       }
     }
   }
@@ -81,17 +81,19 @@
     padding: 0;
 
     li {
-      margin-bottom: 1rem;
       display: flex;
       column-gap: 0.5em;
+      margin-bottom: 1rem;
 
-      strong {
-        font-size: smaller;
+      h3 {
+        letter-spacing: -0.48px;
       }
 
       p {
+        align-self: flex-start;
         margin: 0;
-        font-size: smaller;
+        letter-spacing: 1.2px;
+        line-height: 48px;
       }
     }
   }
