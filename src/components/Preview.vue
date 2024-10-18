@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1>CV Preview</h1>
-    <button @click="exportToPDF">Print CV</button> 
+    <div class="page-header">
+      <h1 class="tool-name">CV1P</h1>
+      <button @click="exportToPDF">Print CV</button> 
+    </div>
 
     <!-- This is the preview of the CV -->
     <div id="layout" ref="cvPreview">
@@ -64,6 +66,19 @@ const exportToPDF = () => {
   gap: 1.5rem;
   background: var(--White, #FFF);
   box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); 
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  width: 80vw;
+  padding: 0.5rem;
+}
+.tool-name {
+  font-family: NoAAftenScreenBold;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin: 2rem 0 0 0;
 }
 .header{
   align-self: flex-start;

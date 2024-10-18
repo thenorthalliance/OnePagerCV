@@ -4,7 +4,7 @@ import { ProfileToRender } from './types';
 
 // Define a dummy ProfileToRender object
 const profileToRender: ProfileToRender = {
-  firstName: 'ole',
+  firstName: 'Ole',
   lastName: 'Oma',
   profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
   birthYear: 1990,
