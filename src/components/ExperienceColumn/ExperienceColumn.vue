@@ -38,17 +38,17 @@
 <style scoped>
 
 .column-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.5rem 1.5rem 2rem 1.5rem;
-    gap: 60px;
-    min-height: 59rem;
-    flex: 1 0 0;
-    align-self: stretch;
-    align-items: flex-start;
-    border-radius: 20px;
-    background: var(--Light-Blue, #DDE4FF);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  gap: 60px;
+  min-height: 59rem;
+  flex: 1 0 0;
+  align-self: stretch;
+  align-items: flex-start;
+  border-radius: 20px;
+  background: var(--Light-Blue, #DDE4FF);
 }
 
 #experience-section {

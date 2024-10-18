@@ -21,6 +21,7 @@
   <div id="about-section">
       <h2>Om {{ profile.firstName }}</h2>
       <p>{{ profile.bio }}</p>
+      
       <div>
           <span>f. {{ profile.birthYear }}</span>
           <span>{{ profile.placeOfResidence }}</span>
