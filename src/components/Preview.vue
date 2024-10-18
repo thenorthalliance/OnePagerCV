@@ -44,7 +44,7 @@ const exportToPDF = () => {
     filename: "cv-preview.pdf",
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a3", orientation: "landscape" },
+    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
   };
 
   html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it
@@ -54,42 +54,42 @@ const exportToPDF = () => {
 
 
 <style>
-#layout {
-  width: 80vw;
-  max-width: 1920px;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  background: var(--White, #FFF);
-  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); 
-}
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  width: 80vw;
-  padding: 0.5rem;
-}
-.tool-name {
-  font-family: NoAAftenScreenBold;
-  color: white;
-  font-size: 2rem;
-  text-align: center;
-  margin: 2rem 0 0 0;
-}
-.header{
-  align-self: flex-start;
-}
+  #layout {
+    width: 80vw;
+    max-width: 1220px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--White, #FFF);
+    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); 
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    padding: 0.5rem;
+  }
+  .tool-name {
+    font-family: NoAAftenScreenBold;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin: 2rem 0 0 0;
+  }
+  .header{
+    align-self: flex-start;
+  }
 
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1.5rem;
-  align-self: stretch;
-}
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+    align-self: stretch;
+  }
 
 </style>

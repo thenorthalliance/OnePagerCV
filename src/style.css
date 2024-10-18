@@ -37,12 +37,12 @@ body {
 
 h1 {
   font-family: TiemposFineLightItalic;
-  font-size: 3.2rem;
+  font-size: 2rem;
   line-height: normal;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
   text-align: left;
@@ -51,18 +51,17 @@ h2 {
 
 h3 {
   font-family: NoAAftenScreenBold;
-  font-size: 1.5rem;
-  line-height: 48px;
+  font-size: 1rem;
+  line-height: 30px;
   margin: 0;
 }
 
 p {
   color: var(--Black, #323231);
   font-family: NoAAftenScreen;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
   margin: 0;
 }
 

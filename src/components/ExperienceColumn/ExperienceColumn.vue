@@ -42,8 +42,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem 1.5rem 2rem 1.5rem;
-  gap: 60px;
-  min-height: 59rem;
+  /* min-height: 59rem; */
   flex: 1 0 0;
   align-self: stretch;
   align-items: flex-start;
@@ -69,7 +68,7 @@
       p {
         margin: 0;
         letter-spacing: 1.2px;
-        line-height: 40px;
+        line-height: 30px;
         text-align: left;
       }
     }
@@ -93,7 +92,7 @@
         align-self: flex-start;
         margin: 0;
         letter-spacing: 1.2px;
-        line-height: 48px;
+        line-height: 30px;
       }
     }
   }
