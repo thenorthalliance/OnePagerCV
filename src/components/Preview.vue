@@ -39,15 +39,14 @@ const exportToPDF = () => {
   const options = { 
     margin: 0,
     padding: 0,
-    filename: 'cv-preview.pdf', 
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 }, 
-    jsPDF: { unit: 'mm', format: 'a3', orientation: 'landscape' } 
-  }; 
-  
-  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it 
+    filename: "cv-preview.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "mm", format: "a3", orientation: "landscape" },
   };
 
+  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it
+};
 </script>
 
 
@@ -79,4 +78,3 @@ const exportToPDF = () => {
 }
 
 </style>
-

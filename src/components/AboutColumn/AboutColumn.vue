@@ -1,35 +1,37 @@
 <template>
 
-    <div class="column-left">
-            <div id="personal-section">
-            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic" />
-            <div>
-                <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-                <h2>{{ profile.title }}</h2>
-            </div>
-            </div>
+  <div class="column-left">
+    <div id="personal-section">
+      <div>
+        <ProfilePicture />
+      </div>
+      <div>
+          <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
+          <h2>{{ profile.title }}</h2>
+      </div>
+  </div>
 
-            <div id="skills-section">
-            <h2>Expertise innen</h2>
-            <ul>
-                <li v-for="skill in profile.skills" :key="skill">{{ skill }}</li>
-            </ul>
-            </div>
+  <div id="skills-section">
+    <h2>Expertise innen</h2>
+    <ul>
+        <li v-for="skill in profile.skills" :key="skill">{{ skill }}</li>
+    </ul>
+  </div>
 
-            <div id="about-section">
-            <h2>Om {{ profile.firstName }}</h2>
-            <p>{{ profile.bio }}</p>
-            <div>
-                <span>f. {{ profile.birthYear }}</span>
-                <span>{{ profile.placeOfResidence }}</span>
-            </div>
-            </div>
-        </div>
+  <div id="about-section">
+      <h2>Om {{ profile.firstName }}</h2>
+      <p>{{ profile.bio }}</p>
+      <div>
+          <span>f. {{ profile.birthYear }}</span>
+          <span>{{ profile.placeOfResidence }}</span>
+      </div>
+    </div>
+  </div>
 
 </template>
 
 <script setup lang="ts">
-
+import ProfilePicture from './ProfilePicture.vue';
 import { ProfileToRender } from '../../types';
 // Define props to receive the ProfileToRender data
 defineProps<{

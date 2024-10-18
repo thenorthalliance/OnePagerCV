@@ -1,36 +1,38 @@
 <template>
-    <div class="column-right">
-        <div id="experience-section">
-          <h3>Utvalgt erfaring</h3>
-          <ul>
-            <li v-for="experience in profile.experiences" :key="experience.projectName">
-              <h4>{{ experience.startDate ? formatDate(experience.startDate) : '' }} - {{ experience.endDate ?
-                formatDate(experience.endDate) : '' }}: {{ experience.projectName }}</h4>
-              <p>{{ experience.description }}</p>
-            </li>
-          </ul>
-        </div>
+  <div class="column-right">
 
-        <div id="qualifications-section">
-          <h3>Utdanning, kurs og sertifiseringer</h3>
-          <ul>
-            <li v-for="qualification in profile.qualifications" :key="qualification.detail">
-              <Strong>{{ qualification.label }}:</Strong>
-              <p>{{ qualification.detail }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div id="experience-section">
+      <h2>Utvalgt erfaring</h2>
+      <ul>
+        <li v-for="experience in profile.experiences" :key="experience.projectName">
+          <h3>{{ experience.startDate ? formatDate(experience.startDate) : '' }} - {{ experience.endDate ?
+            formatDate(experience.endDate) : '' }}: {{ experience.projectName }}</h3>
+          <p>{{ experience.description }}</p>
+        </li>
+      </ul>
+    </div>
+
+    <div id="qualifications-section">
+      <h2>Utdanning, kurs og sertifiseringer</h2>
+      <ul>
+        <li v-for="qualification in profile.qualifications" :key="qualification.detail">
+          <strong>{{ qualification.label }}:</strong>
+          <p>{{ qualification.detail }}</p>
+        </li>
+      </ul>
+    </div>
+
+  </div>
 
 </template>
 
 <script setup lang="ts">
-import { ProfileToRender } from '../../types';
-import { formatDate } from './../../helpers';
+  import { ProfileToRender } from '../../types';
+  import { formatDate } from './../../helpers';
 
-defineProps<{
-  profile: ProfileToRender;
-}>();
+  defineProps<{
+    profile: ProfileToRender;
+  }>();
 </script>
 
 <style scoped>
@@ -38,16 +40,23 @@ defineProps<{
 .column-right {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     padding: 1.5rem 1.5rem 2rem 1.5rem;
-    align-items: flex-start;
     gap: 60px;
+    min-height: 59rem;
     flex: 1 0 0;
     align-self: stretch;
+    align-items: flex-start;
     border-radius: 20px;
     background: var(--Light-Blue, #DDE4FF);
 }
 
 #experience-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: 1rem;
   ul {
     padding: 0;
 
@@ -87,4 +96,5 @@ defineProps<{
     }
   }
 }
+
 </style>

@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--Black, #323231);
   background-color: #645E57;
 
   font-synthesis: none;
