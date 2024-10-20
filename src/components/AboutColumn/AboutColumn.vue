@@ -12,7 +12,13 @@
         >
           {{ profile.name || "Enter your name" }}
         </h1>
-        <h2>{{ profile.title }}</h2>
+        <h2
+          contenteditable="true"
+          @blur="updateProfileField('title', $event.target.innerText)"
+          class="editable-text"
+        >
+          {{ profile.title || "Enter your title" }}
+        </h2>
       </div>
     </div>
 
