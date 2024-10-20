@@ -12,17 +12,18 @@ export interface Profile {
   qualifications: LabelWithDetail[];
 }
 
+// Initialy only for redering, but can now be editable. Renaming might be needed.
 export interface ProfileToRender {
-  firstName: string;
-  lastName: string;
-  profilePicture: { src: string; alt: string };
-  birthYear: number;
-  placeOfResidence: string;
-  title: string;
-  skills: string[];
-  bio: string;
-  experiences: ExperienceToRender[];
-  qualifications: LabelWithDetail[];
+  firstName?: string;
+  lastName?: string;
+  profilePicture?: { src: string; alt: string };
+  birthYear?: number;
+  placeOfResidence?: string;
+  title?: string;
+  skills?: string[];
+  bio?: string;
+  experiences?: ExperienceToRender[];
+  qualifications?: LabelWithDetail[];
 }
 
 interface Experience {
