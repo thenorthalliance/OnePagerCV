@@ -6,23 +6,23 @@
         <ProfilePicture />
       </div>
       <div>
-          <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-          <h2>{{ profile.title }}</h2>
+        <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
+        <h2>{{ profile.title }}</h2>
       </div>
-  </div>
+    </div>
 
-  <div id="skills-section">
-    <h3>Expertise innen</h3>
-    <ul>
+    <div id="skills-section">
+      <h3>Expertise innen</h3>
+      <ul>
         <li v-for="skill in profile.skills" :key="skill">
           <p>
             {{ skill }}
           </p>
         </li>
-    </ul>
-  </div>
+      </ul>
+    </div>
 
-  <div id="details-section">
+    <div id="details-section">
       <h3>Om {{ profile.firstName }}</h3>
       <p>{{ profile.bio }}</p>
 
@@ -30,12 +30,12 @@
         <div>
           <span>f. {{ profile.birthYear }}</span>
         </div>
-        
+
         <div>
           <img class="pin-icon" src="./../../assets/icons/pinIcon.svg" alt="Pin icon">
           <span class="residence">{{ profile.placeOfResidence }}</span>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -43,12 +43,14 @@
 </template>
 
 <script setup lang="ts">
-  import ProfilePicture from './ProfilePicture.vue';
-  import { ProfileToRender } from '../../types';
-  // Define props to receive the ProfileToRender data
-  defineProps<{
-    profile: ProfileToRender;
-  }>();
+import { inject } from 'vue';
+import ProfilePicture from './ProfilePicture.vue';
+import { ProfileToRender } from '../../types';
+
+// Injecting reactive profile object and update function
+const profile = inject('profile');
+const updateProfileField = inject('updateProfileField');
+
 </script>
 
 <style scoped>
@@ -110,7 +112,7 @@
       background: var(--White, #FFF);
     }
 
-    p{
+    p {
       color: var(--Crazy-Blue, #2A45EE);
       font-size: 0.8rem;
       font-style: normal;
@@ -133,8 +135,8 @@
     align-items: center;
   }
 
-  .pin-icon{
-    margin-top:0.1rem;
+  .pin-icon {
+    margin-top: 0.1rem;
     width: 2rem;
     height: 2rem;
   }
@@ -157,7 +159,7 @@
     column-gap: 0.4rem;
   }
 
-  span{
+  span {
     color: var(--Black, #323231);
     font-family: NoAAftenScreen;
     font-size: 1rem;

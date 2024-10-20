@@ -34,7 +34,7 @@ const profileToRender: ProfileToRender = {
 </script>
 
 <template>
-  <Preview :profile="profileToRender" />
+  <Preview />
 </template>
 
 <style scoped>

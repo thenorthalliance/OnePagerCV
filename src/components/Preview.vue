@@ -2,43 +2,64 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">CV1P</h1>
-      <button @click="exportToPDF">Print CV</button> 
+      <button @click="exportToPDF">Print CV</button>
     </div>
 
     <!-- This is the preview of the CV -->
     <div id="layout" ref="cvPreview">
-      
+
       <div class="header">
-          <p>NoA Ignite konsulentprofil</p>
+        <p>NoA Ignite konsulentprofil</p>
       </div>
 
       <div class="main">
-        <AboutColumn :profile="profile" />
-        <ExperienceColumn :profile="profile" />
+        <AboutColumn />
+        <ExperienceColumn />
       </div>
 
-       <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
-       <div>
-            <p>www.noaignite.com</p>
-        </div>
+      <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
+      <div>
+        <p>www.noaignite.com</p>
+      </div>
 
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, provide } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
 
-defineProps<{
-  profile: ProfileToRender;
-}>();
+// Initialize empty profile object
+const profile = reactive<ProfileToRender>({
+  firstName: '',
+  lastName: '',
+  profilePicture: { src: '', alt: '' },
+  birthYear: undefined,
+  placeOfResidence: '',
+  title: '',
+  skills: [],
+  bio: '',
+  experiences: [],
+  qualifications: [],
+});
 
-const exportToPDF = () => { 
+// Generic function to update any field in the profile
+const updateProfileField = (field: keyof ProfileToRender, value: any) => {
+  profile[field] = value;
+};
+
+// Provide the profile and the update function to all child components
+provide('profile', profile);
+provide('updateProfileField', updateProfileField);
+
+
+const exportToPDF = () => {
   const element = document.querySelector("#layout"); // Select the specific component 
-  const options = { 
+  const options = {
     margin: 0,
     padding: 0,
     filename: "cv-preview.pdf",
@@ -54,42 +75,45 @@ const exportToPDF = () => {
 
 
 <style>
-  #layout {
-    width: 80vw;
-    max-width: 1220px;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    background: var(--White, #FFF);
-    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); 
-  }
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    width: 80vw;
-    padding: 0.5rem;
-  }
-  .tool-name {
-    font-family: NoAAftenScreenBold;
-    color: white;
-    font-size: 2rem;
-    text-align: center;
-    margin: 2rem 0 0 0;
-  }
-  .header{
-    align-self: flex-start;
-  }
+#layout {
+  width: 80vw;
+  max-width: 1220px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  padding: 1rem 1.5rem;
+  /**TODO: sjekk tall med figma */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--White, #FFF);
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
+}
 
-  .main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.5rem;
-    align-self: stretch;
-  }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  width: 80vw;
+  padding: 0.5rem;
+}
 
+.tool-name {
+  font-family: NoAAftenScreenBold;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin: 2rem 0 0 0;
+}
+
+.header {
+  align-self: flex-start;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  align-self: stretch;
+}
 </style>
