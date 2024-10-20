@@ -60,7 +60,16 @@
             src="./../../assets/icons/pinIcon.svg"
             alt="Pin icon"
           />
-          <span class="residence">{{ profile.placeOfResidence }}</span>
+          <span
+            contenteditable="true"
+            @blur="
+              updateProfileField('placeOfResidence', $event.target.innerText)
+            "
+            class="residence editable-text"
+            >{{
+              profile.placeOfResidence || "Enter your place of residence"
+            }}</span
+          >
         </div>
       </div>
     </div>
