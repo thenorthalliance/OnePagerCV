@@ -1,12 +1,17 @@
 <template>
-
   <div class="column-left">
     <div id="personal-section">
       <div>
         <ProfilePicture />
       </div>
       <div>
-        <h1>{{ profile.name }}</h1>
+        <h1
+          contenteditable="true"
+          @blur="updateProfileField('name', $event.target.innerText)"
+          class="editable-text"
+        >
+          {{ profile.name || "Enter your name" }}
+        </h1>
         <h2>{{ profile.title }}</h2>
       </div>
     </div>
@@ -32,25 +37,26 @@
         </div>
 
         <div>
-          <img class="pin-icon" src="./../../assets/icons/pinIcon.svg" alt="Pin icon">
+          <img
+            class="pin-icon"
+            src="./../../assets/icons/pinIcon.svg"
+            alt="Pin icon"
+          />
           <span class="residence">{{ profile.placeOfResidence }}</span>
         </div>
-
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
-import ProfilePicture from './ProfilePicture.vue';
-import { ProfileToRender } from '../../types';
+import { inject } from "vue";
+import ProfilePicture from "./ProfilePicture.vue";
+import { ProfileToRender } from "../../types";
 
 // Injecting reactive profile object and update function
-const profile = inject('profile');
-const updateProfileField = inject('updateProfileField');
-
+const profile = inject("profile");
+const updateProfileField = inject("updateProfileField");
 </script>
 
 <style scoped>
@@ -108,12 +114,12 @@ const updateProfileField = inject('updateProfileField');
       padding: 0.7rem 1.4rem;
       border-radius: 40px;
       justify-content: center;
-      border: 1.5px solid var(--Crazy-Blue, #2A45EE);
-      background: var(--White, #FFF);
+      border: 1.5px solid var(--Crazy-Blue, #2a45ee);
+      background: var(--White, #fff);
     }
 
     p {
-      color: var(--Crazy-Blue, #2A45EE);
+      color: var(--Crazy-Blue, #2a45ee);
       font-size: 0.8rem;
       font-style: normal;
       font-weight: 400;
@@ -149,7 +155,6 @@ const updateProfileField = inject('updateProfileField');
     font-family: TiemposFineLight;
     font-size: 1.5rem;
     margin: 0;
-
   }
 
   div {
@@ -164,5 +169,21 @@ const updateProfileField = inject('updateProfileField');
     font-family: NoAAftenScreen;
     font-size: 1rem;
   }
+}
+
+.editable-text {
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  border-bottom: 1px dashed transparent;
+  transition: border-bottom 0.2s ease;
+}
+
+.editable-text:hover {
+  border-bottom: 1px dashed gray;
+}
+
+.editable-text:focus {
+  border-bottom: 1px solid blue;
 }
 </style>
