@@ -35,7 +35,13 @@
 
     <div id="details-section">
       <h3>Om {{ profile.name }}</h3>
-      <p>{{ profile.bio }}</p>
+      <p
+        contenteditable="true"
+        @blur="updateProfileField('bio', $event.target.innerText)"
+        class="editable-text"
+      >
+        {{ profile.bio || "Enter you bio" }}
+      </p>
 
       <div class="row">
         <div>
@@ -180,7 +186,6 @@ const updateProfileField = inject("updateProfileField");
 .editable-text {
   cursor: pointer;
   outline: none;
-  white-space: nowrap;
   border-bottom: 1px dashed transparent;
   transition: border-bottom 0.2s ease;
 }
