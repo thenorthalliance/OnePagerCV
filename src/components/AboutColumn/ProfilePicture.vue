@@ -1,8 +1,12 @@
 <template>
   <div class="profile-picture">
-    <div class="frame" ref="frame">
-      <img v-if="imageUrl" :src="imageUrl" :style="{ width: `${size}px`, height: `${size}px` }" ref="image"
-        alt="Profile" />
+    <div class="frame">
+      <img
+        v-if="profile?.profilePicture?.src"
+        :src="profile.profilePicture.src"
+        :style="{ width: `${size}px`, height: `${size}px` }"
+        :alt="profile.profilePicture.alt || 'Profile Picture'"
+      />
       <div v-else class="placeholder">Upload Photo</div>
       <input type="file" accept="image/*" @change="onImageChange" />
     </div>
@@ -10,26 +14,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { inject } from "vue";
+import { ProfileToRender } from "../../types";
 
 // Accept size as props with default values
 defineProps({
   size: {
     type: Number,
-    default: 120
-  }
+    default: 120,
+  },
 });
 
-const imageUrl = ref(null);
-const image = ref(null);
+// Injecting reactive profile object and update function
+const profile = inject("profile");
+const updateProfileField = inject("updateProfileField");
 
 const onImageChange = (event) => {
   const file = event.target.files[0];
   if (file) {
-    imageUrl.value = URL.createObjectURL(file);
+    // Call the updateProfileField function to update profilePicture in the reactive profile
+    updateProfileField("profilePicture", {
+      src: URL.createObjectURL(file),
+      alt: "Profile Picture",
+    });
   }
 };
-
 </script>
 
 <style scoped>

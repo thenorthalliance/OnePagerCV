@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, provide } from 'vue';
+import { reactive, provide, watch } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
@@ -56,6 +56,10 @@ const updateProfileField = (field: keyof ProfileToRender, value: any) => {
 provide('profile', profile);
 provide('updateProfileField', updateProfileField);
 
+// Console log profile on change to comfirm that updates are working
+watch(profile, () => {
+  console.log('Profile updated:', profile);
+}, { deep: true });
 
 const exportToPDF = () => {
   const element = document.querySelector("#layout"); // Select the specific component 
