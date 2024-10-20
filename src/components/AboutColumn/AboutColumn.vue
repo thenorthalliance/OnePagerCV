@@ -6,7 +6,7 @@
         <ProfilePicture />
       </div>
       <div>
-        <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
+        <h1>{{ profile.name }}</h1>
         <h2>{{ profile.title }}</h2>
       </div>
     </div>
@@ -23,7 +23,7 @@
     </div>
 
     <div id="details-section">
-      <h3>Om {{ profile.firstName }}</h3>
+      <h3>Om {{ profile.name }}</h3>
       <p>{{ profile.bio }}</p>
 
       <div class="row">
