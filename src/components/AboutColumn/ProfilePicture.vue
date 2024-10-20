@@ -6,19 +6,13 @@
       <div v-else class="placeholder">Upload Photo</div>
       <input type="file" accept="image/*" @change="onImageChange" />
     </div>
-    <div v-if="cropper">
-      <button @click="rotateImage">Rotate</button>
-      <button @click="cropImage">Crop</button>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
-import Cropper from 'cropperjs';
-import 'cropperjs/dist/cropper.css';
 
-// Accept width and height as props with default values
+// Accept size as props with default values
 defineProps({
   size: {
     type: Number,
@@ -28,7 +22,6 @@ defineProps({
 
 const imageUrl = ref(null);
 const image = ref(null);
-const cropper = ref(null);
 
 const onImageChange = (event) => {
   const file = event.target.files[0];
@@ -37,30 +30,6 @@ const onImageChange = (event) => {
   }
 };
 
-onMounted(() => {
-  nextTick(() => {
-    if (image.value) {
-      cropper.value = new Cropper(image.value, {
-        aspectRatio: 1,
-        viewMode: 1,
-      });
-    }
-  });
-});
-
-const rotateImage = () => {
-  if (cropper.value) {
-    cropper.value.rotate(90);
-  }
-};
-
-const cropImage = () => {
-  if (cropper.value) {
-    const canvas = cropper.value.getCroppedCanvas();
-    imageUrl.value = canvas.toDataURL();
-    cropper.value.destroy(); // Cleanup
-  }
-};
 </script>
 
 <style scoped>
