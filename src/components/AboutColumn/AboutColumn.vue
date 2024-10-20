@@ -45,7 +45,13 @@
 
       <div class="row">
         <div>
-          <span>f. {{ profile.birthYear }}</span>
+          <span>f. </span>
+          <span
+            contenteditable="true"
+            @blur="updateProfileField('birthYear', $event.target.innerText)"
+            class="editable-text"
+            >{{ profile.birthYear || "Enter your birth year" }}</span
+          >
         </div>
 
         <div>
