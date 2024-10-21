@@ -61,6 +61,7 @@ const dummyProfile = {
   ],
 };
 
+
 const blankProfile = {
   name: '',
   profilePicture: { src: '', alt: '' },
@@ -91,13 +92,12 @@ watch(profile, () => {
 }, { deep: true });
 
 const exportToPDF = () => {
-  const element = document.querySelector("#layout"); // Select the specific component 
+  const element = document.querySelector("#layout"); // Select the specific component
   const options = {
-    margin: 0,
-    padding: 0,
+    margin: [0, 5, 0, 5], //top, left, bottom, right
     filename: "cv-preview.pdf",
     image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
+    html2canvas: { width: 1920, height: 1080 },
     jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
   };
 
@@ -108,20 +108,19 @@ const exportToPDF = () => {
 
 
 <style>
-#layout {
-  width: 80vw;
-  max-width: 1220px;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  padding: 1rem 1.5rem;
-  /**TODO: sjekk tall med figma */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  background: var(--White, #FFF);
-  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
-}
+  #layout {
+    width: 1920px;
+    /* max-width: 1220px; */
+    max-height: 1080px;
+    aspect-ratio: 16 / 9;
+    padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--White, #FFF);
+    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
+  }
 
 .page-header {
   display: flex;
