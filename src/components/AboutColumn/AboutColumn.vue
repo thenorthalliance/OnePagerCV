@@ -7,17 +7,17 @@
       <div>
         <h1
           contenteditable="true"
-          @blur="updateProfileField('name', $event.target.innerText)"
+          @blur="updateProfileField('name', $event.target?.innerText)"
           class="editable-text"
         >
-          {{ profile.name || "Enter your name" }}
+          {{ profile?.firstname + " " + profile?.lastname || "Enter your name" }}
         </h1>
         <h2
           contenteditable="true"
-          @blur="updateProfileField('title', $event.target.innerText)"
+          @blur="updateProfileField('title', $event.target?.innerText)"
           class="editable-text"
         >
-          {{ profile.title || "Enter your title" }}
+          {{ profile?.title || "Enter your title" }}
         </h2>
       </div>
     </div>
@@ -25,7 +25,7 @@
     <div id="skills-section">
       <h3>Expertise innen</h3>
       <ul>
-        <li v-for="skill in profile.skills" :key="skill">
+        <li v-for="skill in profile?.skills" :key="skill">
           <p>
             {{ skill }}
           </p>
@@ -34,13 +34,13 @@
     </div>
 
     <div id="details-section">
-      <h3>Om {{ profile.name }}</h3>
+      <h3>Om {{ profile?.firstname }}</h3>
       <p
         contenteditable="true"
-        @blur="updateProfileField('bio', $event.target.innerText)"
+        @blur="updateProfileField('bio', $event.target?.innerText)"
         class="editable-text"
       >
-        {{ profile.bio || "Enter you bio" }}
+        {{ profile?.bio || "Enter you bio" }}
       </p>
 
       <div class="row">
@@ -48,9 +48,9 @@
           <span>f. </span>
           <span
             contenteditable="true"
-            @blur="updateProfileField('birthYear', $event.target.innerText)"
+            @blur="updateProfileField('birthYear', $event.target?.innerText)"
             class="editable-text"
-            >{{ profile.birthYear || "Enter your birth year" }}</span
+            >{{ profile?.birthYear || "Enter your birth year" }}</span
           >
         </div>
 
@@ -63,11 +63,11 @@
           <span
             contenteditable="true"
             @blur="
-              updateProfileField('placeOfResidence', $event.target.innerText)
+              updateProfileField('placeOfResidence', $event.target?.innerText)
             "
             class="residence editable-text"
             >{{
-              profile.placeOfResidence || "Enter your place of residence"
+              profile?.placeOfResidence || "Enter your place of residence"
             }}</span
           >
         </div>
@@ -79,7 +79,6 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import ProfilePicture from "./ProfilePicture.vue";
-import { ProfileToRender } from "../../types";
 
 // Injecting reactive profile object and update function
 const profile = inject("profile");
@@ -196,20 +195,5 @@ const updateProfileField = inject("updateProfileField");
     font-family: NoAAftenScreen;
     font-size: 1rem;
   }
-}
-
-.editable-text {
-  cursor: pointer;
-  outline: none;
-  border-bottom: 1px dashed transparent;
-  transition: border-bottom 0.2s ease;
-}
-
-.editable-text:hover {
-  border-bottom: 1px dashed gray;
-}
-
-.editable-text:focus {
-  border-bottom: 1px solid blue;
 }
 </style>

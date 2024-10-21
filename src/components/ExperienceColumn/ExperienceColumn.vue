@@ -2,18 +2,56 @@
   <div class="column-right">
 
     <div id="experience-section">
-      <h2>Utvalgt erfaring</h2>
+      <h2
+        contenteditable="true"
+        @blur="updateProfileField('experiencesTitle', $event.target?.innerText)"
+        class="editable-text"
+      >{{profile?.experiencesTitle || "Utvalgt erfaring"}}
+    </h2>
       <ul>
         <li v-for="experience in profile.experiences" :key="experience.projectName">
-          <h3>{{ experience.startDate ? formatDate(experience.startDate) : '' }} - {{ experience.endDate ?
-            formatDate(experience.endDate) : '' }}: {{ experience.projectName }}</h3>
-          <p>{{ experience.description }}</p>
+          <div class="experienceTitle">
+          <h3
+            contenteditable="true"
+            @blur="updateProfileField('experiences.startDate', $event.target?.innerText)"
+            class="editable-text"
+          >
+            {{ experience.startDate ? formatDate(experience.startDate) : 'MM:YY' }}
+          </h3>
+          <h3> - </h3>
+          <h3
+          contenteditable="true"
+            @blur="updateProfileField('experiences.endDate', $event.target?.innerText)"
+            class="editable-text"
+          >  
+            {{ experience.endDate ? formatDate(experience.endDate) : 'MM:YY' }} 
+          </h3>
+          <h3 class="colon">:</h3>
+          <h3
+          contenteditable="true"
+            @blur="updateProfileField('experiences.projectName', $event.target?.innerText)"
+            class="editable-text"
+          >
+            {{ experience.projectName || "Legg til et prosjektnavn" }}
+          </h3>
+        </div>
+          <p
+          contenteditable="true"
+          @blur="updateProfileField('experiences.description', $event.target?.innerText)"
+          class="editable-text"
+          >{{ experience?.description || "Legg til en beskrivelse" }}</p>
         </li>
       </ul>
     </div>
 
     <div id="qualifications-section">
-      <h2>Utdanning, kurs og sertifiseringer</h2>
+      <h2
+        contenteditable="true"
+        @blur="updateProfileField('qualificationsTitle', $event.target?.innerText)"
+        class="editable-text"
+      >
+      {{profile?.qualificationsTitle || "Utdanning, kurs og sertifiseringer"}}
+      </h2>
       <ul>
         <li v-for="qualification in profile.qualifications" :key="qualification.detail">
           <h3>{{ qualification.label }}:</h3>
@@ -28,7 +66,6 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { ProfileToRender } from '../../types';
 import { formatDate } from './../../helpers';
 
 // Injecting reactive profile object and update function
@@ -59,6 +96,21 @@ const updateProfileField = inject('updateProfileField');
 
     li {
       margin-bottom: 1.4rem;
+
+      .experienceTitle {
+        display: flex;
+        column-gap: 0.5em;
+        /* margin-bottom: 1rem; */
+
+        h3 {
+          letter-spacing: -0.48px;
+        }
+      }
+
+      .colon {
+        margin-left: -0.33em;
+      }
+      
 
       h3 {
         margin: 0 0 0.6rem 0;

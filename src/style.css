@@ -94,6 +94,22 @@ button:focus-visible {
   text-align: center;
 }
 
+
+.editable-text {
+  cursor: pointer;
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  transition: border-bottom 0.2s ease;
+}
+
+.editable-text:hover {
+  border-bottom: 1px dashed gray;
+}
+
+.editable-text:focus {
+  border-bottom: 1px solid blue;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -34,13 +34,15 @@ import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
 
 const dummyProfile = {
-  name: 'Christian M Sinding-Larsen',
+  firstname: 'Christian M',
+  lastname: 'Sinding-Larsen',
   profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
   birthYear: 1990,
   placeOfResidence: 'Oslo',
   title: 'Team Lead Customer Experience & Advisor',
   skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
   bio: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
+  experienceTitle: 'Utvalgt erfaring',
   experiences: [
     {
       projectName: 'Avonova Web',
@@ -54,6 +56,7 @@ const dummyProfile = {
       description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en enhetlig identitet på tvers av land, samt en kursbookingsløsning som integrerte data fra flere systemer via et Next.js API.',
     },
   ],
+  qualificationTitle: 'Utdanning, kurs og sertifiseringer',
   qualifications: [
     { label: 'Bachelor of Science', detail: 'Information Technology' },
     { label: 'Kurs', detail: 'Sanity certified developer' },
