@@ -1,54 +1,89 @@
 <template>
-
   <div class="column-left">
     <div id="personal-section">
       <div>
         <ProfilePicture />
       </div>
       <div>
-          <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-          <h2>{{ profile.title }}</h2>
+        <h1
+          contenteditable="true"
+          @blur="updateProfileField('name', $event.target.innerText)"
+          class="editable-text"
+        >
+          {{ profile.name || "Enter your name" }}
+        </h1>
+        <h2
+          contenteditable="true"
+          @blur="updateProfileField('title', $event.target.innerText)"
+          class="editable-text"
+        >
+          {{ profile.title || "Enter your title" }}
+        </h2>
       </div>
-  </div>
+    </div>
 
-  <div id="skills-section">
-    <h3>Expertise innen</h3>
-    <ul>
+    <div id="skills-section">
+      <h3>Expertise innen</h3>
+      <ul>
         <li v-for="skill in profile.skills" :key="skill">
           <p>
             {{ skill }}
           </p>
         </li>
-    </ul>
-  </div>
+      </ul>
+    </div>
 
-  <div id="details-section">
-      <h3>Om {{ profile.firstName }}</h3>
-      <p>{{ profile.bio }}</p>
+    <div id="details-section">
+      <h3>Om {{ profile.name }}</h3>
+      <p
+        contenteditable="true"
+        @blur="updateProfileField('bio', $event.target.innerText)"
+        class="editable-text"
+      >
+        {{ profile.bio || "Enter you bio" }}
+      </p>
 
       <div class="row">
         <div>
-          <span>f. {{ profile.birthYear }}</span>
+          <span>f. </span>
+          <span
+            contenteditable="true"
+            @blur="updateProfileField('birthYear', $event.target.innerText)"
+            class="editable-text"
+            >{{ profile.birthYear || "Enter your birth year" }}</span
+          >
         </div>
-        
+
         <div>
-          <img class="pin-icon" src="./../../assets/icons/pinIcon.svg" alt="Pin icon">
-          <span class="residence">{{ profile.placeOfResidence }}</span>
+          <img
+            class="pin-icon"
+            src="./../../assets/icons/pinIcon.svg"
+            alt="Pin icon"
+          />
+          <span
+            contenteditable="true"
+            @blur="
+              updateProfileField('placeOfResidence', $event.target.innerText)
+            "
+            class="residence editable-text"
+            >{{
+              profile.placeOfResidence || "Enter your place of residence"
+            }}</span
+          >
         </div>
-        
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-  import ProfilePicture from './ProfilePicture.vue';
-  import { ProfileToRender } from '../../types';
-  // Define props to receive the ProfileToRender data
-  defineProps<{
-    profile: ProfileToRender;
-  }>();
+import { inject } from "vue";
+import ProfilePicture from "./ProfilePicture.vue";
+import { ProfileToRender } from "../../types";
+
+// Injecting reactive profile object and update function
+const profile = inject("profile");
+const updateProfileField = inject("updateProfileField");
 </script>
 
 <style scoped>
@@ -106,12 +141,12 @@
       padding: 0.7rem 1.4rem;
       border-radius: 40px;
       justify-content: center;
-      border: 1.5px solid var(--Crazy-Blue, #2A45EE);
-      background: var(--White, #FFF);
+      border: 1.5px solid var(--Crazy-Blue, #2a45ee);
+      background: var(--White, #fff);
     }
 
-    p{
-      color: var(--Crazy-Blue, #2A45EE);
+    p {
+      color: var(--Crazy-Blue, #2a45ee);
       font-size: 0.8rem;
       font-style: normal;
       font-weight: 400;
@@ -133,8 +168,8 @@
     align-items: center;
   }
 
-  .pin-icon{
-    margin-top:0.1rem;
+  .pin-icon {
+    margin-top: 0.1rem;
     width: 2rem;
     height: 2rem;
   }
@@ -147,7 +182,6 @@
     font-family: TiemposFineLight;
     font-size: 1.5rem;
     margin: 0;
-
   }
 
   div {
@@ -157,10 +191,25 @@
     column-gap: 0.4rem;
   }
 
-  span{
+  span {
     color: var(--Black, #323231);
     font-family: NoAAftenScreen;
     font-size: 1rem;
   }
+}
+
+.editable-text {
+  cursor: pointer;
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  transition: border-bottom 0.2s ease;
+}
+
+.editable-text:hover {
+  border-bottom: 1px dashed gray;
+}
+
+.editable-text:focus {
+  border-bottom: 1px solid blue;
 }
 </style>

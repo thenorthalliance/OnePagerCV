@@ -1,5 +1,5 @@
 // Define the main CV/Profile structure
-export interface Profile {
+/* export interface Profile {
   firstName: string;
   lastName: string;
   profilePicture: { src: string; alt: string }; // Define a custom type for Image
@@ -10,27 +10,27 @@ export interface Profile {
   bio: SelectableText[];
   experiences: Experience[];
   qualifications: LabelWithDetail[];
-}
+} */
 
+// Initialy only for redering, but can now be editable. Renaming might be needed.
 export interface ProfileToRender {
-  firstName: string;
-  lastName: string;
-  profilePicture: { src: string; alt: string };
-  birthYear: number;
-  placeOfResidence: string;
-  title: string;
-  skills: string[];
-  bio: string;
-  experiences: ExperienceToRender[];
-  qualifications: LabelWithDetail[];
+  name?: string;
+  profilePicture?: { src: string; alt: string };
+  birthYear?: number;
+  placeOfResidence?: string;
+  title?: string;
+  skills?: string[];
+  bio?: string;
+  experiences?: ExperienceToRender[];
+  qualifications?: LabelWithDetail[];
 }
 
-interface Experience {
+/* interface Experience {
   projectName: string;
   startDate?: Date;
   endDate?: Date;
   description: SelectableText[];
-}
+} */
 
 interface ExperienceToRender {
   projectName: string;
@@ -39,10 +39,10 @@ interface ExperienceToRender {
   description: string;
 }
 
-interface SelectableText {
+/* interface SelectableText {
   isSelected: boolean;
   richText: string;
-}
+} */
 
 interface LabelWithDetail {
   label: string;

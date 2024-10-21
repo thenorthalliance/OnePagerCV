@@ -9,32 +9,87 @@
     <div id="layout" ref="cvPreview">
 
       <div class="header">
-          <p>NoA Ignite konsulentprofil</p>
+        <p>NoA Ignite konsulentprofil</p>
       </div>
 
       <div class="main">
-        <AboutColumn :profile="profile" />
-        <ExperienceColumn :profile="profile" />
+        <AboutColumn />
+        <ExperienceColumn />
       </div>
 
-       <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
-       <div>
-            <p>www.noaignite.com</p>
-        </div>
+      <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
+      <div>
+        <p>www.noaignite.com</p>
+      </div>
 
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, provide, watch } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
 
-defineProps<{
-  profile: ProfileToRender;
-}>();
+const dummyProfile = {
+  name: 'Christian M Sinding-Larsen',
+  profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
+  birthYear: 1990,
+  placeOfResidence: 'Oslo',
+  title: 'Team Lead Customer Experience & Advisor',
+  skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
+  bio: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
+  experiences: [
+    {
+      projectName: 'Avonova Web',
+      startDate: new Date('2022-09-01'),
+      endDate: new Date('2024-04-01'),
+      description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en ... Magnus tok ansvar for vedlikehold og videreutvikling av pipeline-ene i Azure DevOps, samt optimalisering av trafikkflyten med Azure Frontdoor. Som tech lead sikret han balansen mellom tekniske og forretningsmessige mål, og håndterte teknisk gjeld for å sikre langsiktig skalerbarhet.',
+    }, {
+      projectName: 'Avonova Web',
+      startDate: new Date('2022-09-01'),
+      endDate: new Date('2024-04-01'),
+      description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en enhetlig identitet på tvers av land, samt en kursbookingsløsning som integrerte data fra flere systemer via et Next.js API.',
+    },
+  ],
+  qualifications: [
+    { label: 'Bachelor of Science', detail: 'Information Technology' },
+    { label: 'Kurs', detail: 'Sanity certified developer' },
+    { label: 'Kurs', detail: 'Fart og flyt, FINN' },
+  ],
+};
+
+
+const blankProfile = {
+  name: '',
+  profilePicture: { src: '', alt: '' },
+  birthYear: undefined,
+  placeOfResidence: '',
+  title: '',
+  skills: [],
+  bio: '',
+  experiences: [],
+  qualifications: [],
+};
+
+// Initialize empty profile object
+const profile = reactive<ProfileToRender>(dummyProfile);
+
+// Generic function to update any field in the profile
+const updateProfileField = (field: keyof ProfileToRender, value: any) => {
+  profile[field] = value;
+};
+
+// Provide the profile and the update function to all child components
+provide('profile', profile);
+provide('updateProfileField', updateProfileField);
+
+// Console log profile on change to comfirm that updates are working
+watch(profile, () => {
+  console.log('Profile updated:', profile);
+}, { deep: true });
 
 const exportToPDF = () => {
   const element = document.querySelector("#layout"); // Select the specific component
@@ -66,29 +121,31 @@ const exportToPDF = () => {
     background: var(--White, #FFF);
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
   }
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    width: 80vw;
-    padding: 0.5rem;
-  }
-  .tool-name {
-    font-family: NoAAftenScreenBold;
-    color: white;
-    font-size: 2rem;
-    text-align: center;
-    margin: 2rem 0 0 0;
-  }
-  .header{
-    align-self: flex-start;
-  }
 
-  .main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.5rem;
-    align-self: stretch;
-  }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  width: 80vw;
+  padding: 0.5rem;
+}
 
+.tool-name {
+  font-family: NoAAftenScreenBold;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin: 2rem 0 0 0;
+}
+
+.header {
+  align-self: flex-start;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  align-self: stretch;
+}
 </style>

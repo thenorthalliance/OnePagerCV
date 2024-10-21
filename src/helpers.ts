@@ -1,6 +1,6 @@
-import { Profile, ProfileToRender } from "./types";
+import { ProfileToRender } from "./types";
 
-export const transformProfileToRender = (profile: Profile): ProfileToRender => {
+/* export const transformProfileToRender = (profile: Profile): ProfileToRender => {
   return {
     firstName: profile.firstName,
     lastName: profile.lastName,
@@ -19,7 +19,7 @@ export const transformProfileToRender = (profile: Profile): ProfileToRender => {
     })),
     qualifications: profile.qualifications,
   };
-};
+}; */
 
 export const formatDate = (date: Date): string => {
   return date.toLocaleDateString("en-GB", {

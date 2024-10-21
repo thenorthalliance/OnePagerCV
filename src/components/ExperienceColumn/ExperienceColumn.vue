@@ -27,16 +27,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ProfileToRender } from '../../types';
-  import { formatDate } from './../../helpers';
+import { inject } from 'vue';
+import { ProfileToRender } from '../../types';
+import { formatDate } from './../../helpers';
 
-  defineProps<{
-    profile: ProfileToRender;
-  }>();
+// Injecting reactive profile object and update function
+const profile = inject('profile');
+const updateProfileField = inject('updateProfileField');
+
 </script>
 
 <style scoped>
-
 .column-right {
   display: flex;
   flex-direction: column;
@@ -58,7 +59,7 @@
 
     li {
       margin-bottom: 1.4rem;
-      
+
       h3 {
         margin: 0 0 0.6rem 0;
         line-height: normal;
@@ -97,5 +98,4 @@
     }
   }
 }
-
 </style>
