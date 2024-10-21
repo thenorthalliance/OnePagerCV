@@ -64,7 +64,6 @@ const dummyProfile = {
   ],
 };
 
-
 const blankProfile = {
   name: '',
   profilePicture: { src: '', alt: '' },

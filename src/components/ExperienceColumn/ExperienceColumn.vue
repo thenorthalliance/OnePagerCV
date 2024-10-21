@@ -10,36 +10,42 @@
     </h2>
       <ul>
         <li v-for="experience in profile.experiences" :key="experience.projectName">
-          <div class="experienceTitle">
-          <h3
+          <div class="h3EditableTitle">
+            <h3
+              contenteditable="true"
+              @blur="updateProfileField('experiences.startDate', $event.target?.innerText)"
+              class="editable-text"
+            >
+              {{ experience.startDate ? formatDate(experience.startDate) : 'MM:ÅÅ' }}
+            </h3>
+
+            <h3>-</h3>
+
+            <h3
             contenteditable="true"
-            @blur="updateProfileField('experiences.startDate', $event.target?.innerText)"
-            class="editable-text"
-          >
-            {{ experience.startDate ? formatDate(experience.startDate) : 'MM:YY' }}
-          </h3>
-          <h3> - </h3>
-          <h3
-          contenteditable="true"
-            @blur="updateProfileField('experiences.endDate', $event.target?.innerText)"
-            class="editable-text"
-          >  
-            {{ experience.endDate ? formatDate(experience.endDate) : 'MM:YY' }} 
-          </h3>
-          <h3 class="colon">:</h3>
-          <h3
-          contenteditable="true"
-            @blur="updateProfileField('experiences.projectName', $event.target?.innerText)"
-            class="editable-text"
-          >
-            {{ experience.projectName || "Legg til et prosjektnavn" }}
-          </h3>
-        </div>
+              @blur="updateProfileField('experiences.endDate', $event.target?.innerText)"
+              class="editable-text"
+            >  
+              {{ experience.endDate ? formatDate(experience.endDate) : 'MM:ÅÅ' }} 
+            </h3>
+
+            <h3 class="colon">:</h3>
+
+            <h3
+            contenteditable="true"
+              @blur="updateProfileField('experiences.projectName', $event.target?.innerText)"
+              class="editable-text"
+            >
+              {{ experience.projectName || "Prosjeknavn, Kunde" }}
+            </h3>
+
+          </div>
+
           <p
           contenteditable="true"
           @blur="updateProfileField('experiences.description', $event.target?.innerText)"
           class="editable-text"
-          >{{ experience?.description || "Legg til en beskrivelse" }}</p>
+          >{{ experience?.description || "Legg til tekst" }}</p>
         </li>
       </ul>
     </div>
@@ -54,8 +60,22 @@
       </h2>
       <ul>
         <li v-for="qualification in profile.qualifications" :key="qualification.detail">
-          <h3>{{ qualification.label }}:</h3>
-          <p>{{ qualification.detail }}</p>
+          <div class="h3EditableTitle">
+            <h3
+              contenteditable="true"
+              @blur="updateProfileField('qualifications.label', $event.target?.innerText)"
+              class="editable-text"
+            >{{ qualification?.label || "Utdanning, kurs eller sertifiseringsnavn" }}
+            </h3>
+
+            <h3 class="colon">:</h3>
+
+            <p
+            contenteditable="true"
+            @blur="updateProfileField('qualifications?.detail', $event.target?.innerText)"
+            class="editable-text"
+            >{{ qualification.detail || "Sted, År eller Beskrivelse"}}</p>
+          </div>
         </li>
       </ul>
     </div>
@@ -88,6 +108,21 @@ const updateProfileField = inject('updateProfileField');
   background: var(--Light-Blue, #DDE4FF);
 }
 
+.h3EditableTitle {
+  display: flex;
+  column-gap: 0.5em;
+  /* margin-bottom: 1rem; */
+  
+  .colon {
+    margin-left: -0.3em;
+  }
+  h3 {
+    letter-spacing: -0.48px;
+  }
+
+}
+
+
 #experience-section {
 
   ul {
@@ -97,21 +132,10 @@ const updateProfileField = inject('updateProfileField');
     li {
       margin-bottom: 1.4rem;
 
-      .experienceTitle {
-        display: flex;
-        column-gap: 0.5em;
-        /* margin-bottom: 1rem; */
-
-        h3 {
-          letter-spacing: -0.48px;
-        }
-      }
-
-      .colon {
-        margin-left: -0.33em;
+      .colon{
+        margin-left: -0.3em;
       }
       
-
       h3 {
         margin: 0 0 0.6rem 0;
         line-height: normal;
