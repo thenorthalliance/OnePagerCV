@@ -53,7 +53,7 @@
 
 <style scoped>
 .column-left {
-  width: 50%;
+  width: 30%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@
 }
 
 #personal-section {
-  width: 100%;
+  width: 28%;
   column-gap: 2.5rem;
   display: flex;
 
