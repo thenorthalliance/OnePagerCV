@@ -24,13 +24,8 @@
 
     <div id="skills-section">
       <h3>Expertise innen</h3>
-      <ul>
-        <li v-for="skill in profile?.skills" :key="skill">
-          <p>
-            {{ skill }}
-          </p>
-        </li>
-      </ul>
+
+      <SkillsChips />
     </div>
 
     <div id="details-section">
@@ -79,10 +74,12 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import ProfilePicture from "./ProfilePicture.vue";
+import SkillsChips from "./SkillsChips.vue";
 
 // Injecting reactive profile object and update function
 const profile = inject("profile");
 const updateProfileField = inject("updateProfileField");
+
 </script>
 
 <style scoped>
@@ -146,7 +143,7 @@ const updateProfileField = inject("updateProfileField");
 
     p {
       color: var(--Crazy-Blue, #2a45ee);
-      font-size: 0.8rem;
+      font-size: 1.2rem;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
