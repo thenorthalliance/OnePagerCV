@@ -110,6 +110,24 @@ button:focus-visible {
   border-bottom: 1px solid blue;
 }
 
+.title-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: none;
+}
+/* elements whose class name ends with "-section" */
+[class$="-section"]:hover .edit-icon {
+    display: flex;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

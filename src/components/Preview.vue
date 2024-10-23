@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, provide, watch } from 'vue';
+import { reactive, provide, watch, onBeforeUnmount } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';

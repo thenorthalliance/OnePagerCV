@@ -6,16 +6,16 @@
     >
     <div class="title-field">
         <h3
-            contenteditable="true"
-            @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
-            class="editable-text"
+        contenteditable="true"
+        @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
+        class="editable-text"
         >Ekspertise innen</h3>
         <img 
             src="./../../assets/icons/editIcon.svg"
             alt="Edit icon"
             :class="{ 'edit-icon' : !editingMode }"
         />
-
+        
     </div>
         <ul>
             <li 
@@ -60,32 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { inject } from "vue";
-import { onBeforeUnmount } from 'vue';
+import { ref, inject } from "vue";
 // Injecting reactive profile object and update function
 const profile = inject("profile");
 const hoveredIndex = ref(-1); // To track which item is being hovered
 const updateProfileField = inject("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
-
-const vClickOutside = {
-  mounted(el: HTMLElement, binding: any) {
-    const clickHandler = (event: MouseEvent) => {
-      if (!el.contains(event.target as Node)) {
-        binding.value(); // Call the function passed to v-click-outside
-      }
-    };
-
-    // Attach the listener on mount
-    document.addEventListener('click', clickHandler);
-
-    // Cleanup when the element is unmounted
-    onBeforeUnmount(() => {
-      document.removeEventListener('click', clickHandler);
-    });
-  },
-};
 
 // Hover event handler
 function hoverEvent(index: number) {
@@ -120,14 +100,7 @@ function removeSkill(index: number) {
         align-self: stretch;
     }
 
-    .title-field {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-     ul {
+    ul {
         padding: 0;
         display: flex;
         flex-wrap: wrap;
@@ -186,15 +159,6 @@ function removeSkill(index: number) {
         p {
             color: #645E57;
         }
-    }
-    .edit-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        display: none;
-    }
-
-    .skills-section:hover .edit-icon {
-        display: flex;
     }
     .add-icon {
         width: 1.3rem;

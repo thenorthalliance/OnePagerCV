@@ -1,80 +1,16 @@
 <template>
   <div class="column-left">
-    <div id="personal-section">
-      <div>
-        <ProfilePicture />
-      </div>
-      <div>
-        <h1
-          contenteditable="true"
-          @blur="updateProfileField('name', $event.target?.innerText)"
-          class="editable-text"
-        >
-          {{ profile?.firstname + " " + profile?.lastname || "Enter your name" }}
-        </h1>
-        <h2
-          contenteditable="true"
-          @blur="updateProfileField('title', $event.target?.innerText)"
-          class="editable-text"
-        >
-          {{ profile?.title || "Enter your title" }}
-        </h2>
-      </div>
-    </div>
-
+    <PersonSection />
     <SkillsChips />
+    <DetailsSection />
 
-    <div id="details-section">
-      <h3>Om {{ profile?.firstname }}</h3>
-      <p
-        contenteditable="true"
-        @blur="updateProfileField('bio', $event.target?.innerText)"
-        class="editable-text"
-      >
-        {{ profile?.bio || "Enter you bio" }}
-      </p>
-
-      <div class="row">
-        <div>
-          <span>f. </span>
-          <span
-            contenteditable="true"
-            @blur="updateProfileField('birthYear', $event.target?.innerText)"
-            class="editable-text"
-            >{{ profile?.birthYear || "Enter your birth year" }}</span
-          >
-        </div>
-
-        <div>
-          <img
-            class="pin-icon"
-            src="./../../assets/icons/pinIcon.svg"
-            alt="Pin icon"
-          />
-          <span
-            contenteditable="true"
-            @blur="
-              updateProfileField('placeOfResidence', $event.target?.innerText)
-            "
-            class="residence editable-text"
-            >{{
-              profile?.placeOfResidence || "Enter your place of residence"
-            }}</span
-          >
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
-import ProfilePicture from "./ProfilePicture.vue";
 import SkillsChips from "./SkillsChips.vue";
-
-// Injecting reactive profile object and update function
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+import PersonSection from "./PersonSection.vue";
+import DetailsSection from "./DetailsSection.vue";
 
 </script>
 
@@ -91,68 +27,4 @@ const updateProfileField = inject("updateProfileField");
   gap: 2rem;
 }
 
-#personal-section {
-  width: 28%;
-  column-gap: 2.5rem;
-  display: flex;
-
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  h1,
-  h2 {
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  h2 {
-    color: blue;
-  }
-}
-
-#details-section {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-
-  .row {
-    display: flex;
-    flex-direction: row;
-    gap: 2.5rem;
-    align-items: center;
-  }
-
-  .pin-icon {
-    margin-top: 0.1rem;
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .residence {
-    margin-top: 0.6rem;
-  }
-
-  p {
-    font-family: TiemposFineLight;
-    font-size: 1.5rem;
-    margin: 0;
-  }
-
-  div {
-    margin-top: auto;
-    display: flex;
-    flex-direction: row;
-    column-gap: 0.4rem;
-  }
-
-  span {
-    color: var(--Black, #323231);
-    font-family: NoAAftenScreen;
-    font-size: 1rem;
-  }
-}
 </style>
