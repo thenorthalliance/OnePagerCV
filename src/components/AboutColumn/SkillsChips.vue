@@ -1,42 +1,102 @@
 <template>
-    <ul>
-        <li 
-            v-for="(skill, index) in profile?.skills" :key="skill"
-            @mouseenter="hoverEvent(index)"
-            @mouseleave="hoverEvent(-1)"
-        >
-        <div>
-            <p
+    <div
+    class="skills-section"
+    @click="editingMode = true"
+    v-click-outside="() => { editingMode = false }"
+    >
+    <div class="title-field">
+        <h3
             contenteditable="true"
-            @blur="updateProfileField('skill', $event.target?.innerText)"
+            @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
             class="editable-text"
-            
-            >
-            {{ skill || "Legg til"}}
-            </p>
-            
-            <!-- Delete button, only visible on hover -->
-            <span v-if="hoveredIndex === index" @click="removeSkill(index)" class="remove-btn">
-                &times; <!-- This represents the X -->
-            </span>
+        >Ekspertise innen</h3>
+        <img 
+            src="./../../assets/icons/editIcon.svg"
+            alt="Edit icon"
+            :class="{ 'edit-icon' : !editingMode }"
+        />
 
-        </div>
-    </li>
-</ul> 
+    </div>
+        <ul>
+            <li 
+                v-for="(skill, index) in profile?.skills" :key="skill"
+                @mouseenter="hoverEvent(index)"
+                @mouseleave="hoverEvent(-1)"
+            >
+            <div>
+                <p
+                :contenteditable="editingMode"
+                @blur="editingMode && updateProfileField('skill', $event.target?.innerText)"
+                :class="{ 'editable-text': editingMode }"
+                
+                >
+                {{ skill }}
+                </p>
+                
+                <!-- Delete button, only visible on hover -->
+                <span v-if="editingMode && hoveredIndex === index" @click="removeSkill(index)" class="remove-btn">
+                    &times; <!-- This represents the X -->
+                </span>
+
+            </div>
+        </li>
+        <li 
+            v-if="editingMode" 
+            class="add-skill-button"
+            @click="addSkill"
+        >
+            <img 
+                src="./../../assets/icons/AddIcon.svg"
+                alt="Add icon"
+                class="add-icon"
+            />
+            <p>
+                Legg til
+            </p>
+        </li>
+    </ul> 
+</div>
 
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { inject } from "vue";
+import { onBeforeUnmount } from 'vue';
 // Injecting reactive profile object and update function
 const profile = inject("profile");
 const hoveredIndex = ref(-1); // To track which item is being hovered
 const updateProfileField = inject("updateProfileField");
+const editingMode = ref(false); // To track if the user is in editing mode
+
+const vClickOutside = {
+  mounted(el: HTMLElement, binding: any) {
+    const clickHandler = (event: MouseEvent) => {
+      if (!el.contains(event.target as Node)) {
+        binding.value(); // Call the function passed to v-click-outside
+      }
+    };
+
+    // Attach the listener on mount
+    document.addEventListener('click', clickHandler);
+
+    // Cleanup when the element is unmounted
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', clickHandler);
+    });
+  },
+};
 
 // Hover event handler
 function hoverEvent(index: number) {
   hoveredIndex.value = index;
+}
+
+// Add skill handler
+function addSkill() {
+  if (profile?.skills) {
+    profile.skills.push('Ny ekspertise'); // Add an empty skill
+  }
 }
 
 // Remove skill handler
@@ -49,6 +109,24 @@ function removeSkill(index: number) {
 </script>
 
 <style scoped>
+    h3 {
+        color: var(--Crazy-Blue, #2a45ee);
+    }
+    .skills-section {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+    }
+
+    .title-field {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
      ul {
         padding: 0;
         display: flex;
@@ -69,6 +147,7 @@ function removeSkill(index: number) {
             box-sizing: border-box;
             width: auto; 
             max-height: 3.6rem;
+            gap: 0.75rem;
         }
 
         p {
@@ -81,6 +160,7 @@ function removeSkill(index: number) {
         }
 
     }
+
     .remove-btn {
         position: absolute;
         top: -0.5rem; /* Adjust as needed */
@@ -97,6 +177,28 @@ function removeSkill(index: number) {
         cursor: pointer;
         display: flex;
         align-items: center;
+        justify-content: center;
+    }
+
+    .add-skill-button {
+        border: 1.5px dashed var(--Ash, #645E57);
+
+        p {
+            color: #645E57;
+        }
+    }
+    .edit-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        display: none;
+    }
+
+    .skills-section:hover .edit-icon {
+        display: flex;
+    }
+    .add-icon {
+        width: 1.3rem;
+        height: 1.3rem;
         justify-content: center;
     }
 </style>

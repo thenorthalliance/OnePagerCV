@@ -40,6 +40,7 @@ const dummyProfile = {
   birthYear: 1990,
   placeOfResidence: 'Oslo',
   title: 'Team Lead Customer Experience & Advisor',
+  skillsTitle: 'Ekspertise innen',
   skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
   bio: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
   experienceTitle: 'Utvalgt erfaring',

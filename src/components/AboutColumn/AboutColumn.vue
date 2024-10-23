@@ -22,11 +22,7 @@
       </div>
     </div>
 
-    <div id="skills-section">
-      <h3>Expertise innen</h3>
-
-      <SkillsChips />
-    </div>
+    <SkillsChips />
 
     <div id="details-section">
       <h3>Om {{ profile?.firstname }}</h3>
@@ -115,40 +111,6 @@ const updateProfileField = inject("updateProfileField");
 
   h2 {
     color: blue;
-  }
-}
-
-#skills-section {
-  h3 {
-    color: blue;
-  }
-
-  ul {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    align-content: flex-start;
-    align-self: stretch;
-    gap: 0.7rem;
-
-    li {
-      display: flex;
-      padding: 0.7rem 1.4rem;
-      border-radius: 40px;
-      justify-content: center;
-      border: 1.5px solid var(--Crazy-Blue, #2a45ee);
-      background: var(--White, #fff);
-    }
-
-    p {
-      color: var(--Crazy-Blue, #2a45ee);
-      font-size: 1.2rem;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      letter-spacing: 0.36px;
-    }
   }
 }
 
