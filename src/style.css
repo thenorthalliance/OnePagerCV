@@ -128,6 +128,20 @@ button:focus-visible {
     display: flex;
 }
 
+.h3EditableTitle {
+  display: flex;
+  column-gap: 0.5em;
+  /* margin-bottom: 1rem; */
+  
+  .colon {
+    margin-left: -0.3em;
+  }
+  h3 {
+    letter-spacing: -0.48px;
+  }
+
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
