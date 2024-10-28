@@ -21,7 +21,6 @@ import DetailsSection from "./DetailsSection.vue";
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  align-self: stretch;
   text-align: left;
   flex: 1 0 0;
   gap: 2rem;

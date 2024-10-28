@@ -24,14 +24,40 @@
 
     </div>
   </div>
+
+  <!-- <div :class="{ 'sticky-line': true, 'hidden-line': hideLine }"></div> -->
+  <div class="sticky-line"></div>
 </template>
 
 <script setup lang="ts">
-import { reactive, provide, watch, onBeforeUnmount } from 'vue';
+import { reactive, provide, watch } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
+
+// import { ref, onMounted, onUnmounted } from "vue";
+
+// const hideLine = ref(false);
+// const cvPreview = ref<HTMLElement | null>(null);
+
+// function checkLineVisibility() {
+//   if (cvPreview.value) {
+//     const rect = cvPreview.value.getBoundingClientRect();
+//     // Set height threshold where the line should disappear, adjust 200 to desired value
+//     hideLine.value = rect.top < 1570;
+//   }
+// }
+
+// // Listen to scroll events
+// onMounted(() => {
+//   window.addEventListener("scroll", checkLineVisibility);
+//   checkLineVisibility(); // Initial check
+// });
+
+// onUnmounted(() => {
+//   window.removeEventListener("scroll", checkLineVisibility);
+// });
 
 const dummyProfile = {
   firstname: 'Christian M',
@@ -100,7 +126,7 @@ const exportToPDF = () => {
     margin: [0, 5, 0, 5], //top, left, bottom, right
     filename: "cv-preview.pdf",
     image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { width: 1920, height: 1080 },
+    html2canvas: { width: 1920, height: 1400 },
     jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
   };
 
@@ -113,8 +139,8 @@ const exportToPDF = () => {
 <style>
   #layout {
     width: 1920px;
-    /* max-width: 1220px; */
-    max-height: 1080px;
+    /* max-height: auto; */
+    /* min-height: 1344px;*/
     aspect-ratio: 16 / 9;
     padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
     display: flex;
@@ -125,30 +151,42 @@ const exportToPDF = () => {
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
   }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  width: 80vw;
-  padding: 0.5rem;
-}
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    padding: 0.5rem;
+  }
 
-.tool-name {
-  font-family: NoAAftenScreenBold;
-  color: white;
-  font-size: 2rem;
-  text-align: center;
-  margin: 2rem 0 0 0;
-}
+  .tool-name {
+    font-family: NoAAftenScreenBold;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin: 2rem 0 0 0;
+  }
 
-.header {
-  align-self: flex-start;
-}
+  .header {
+    align-self: flex-start;
+  }
 
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1.5rem;
-  align-self: stretch;
-}
+  .main {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+    align-self: stretch;
+  }
+
+  .sticky-line {
+    position: absolute;
+    top: 1471px;
+    width: 1920px;
+    z-index: 1000;
+    border: 5px dashed red;
+  }
+  .hidden-line {
+    display: none;
+  }
 </style>

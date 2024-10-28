@@ -6,9 +6,9 @@
     >
     <div class="title-field">
         <h3
-        contenteditable="true"
-        @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
-        class="editable-text"
+            contenteditable="true"
+            @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
+            class="editable-text"
         >Ekspertise innen</h3>
         <img 
             src="./../../assets/icons/editIcon.svg"
@@ -93,6 +93,7 @@ function removeSkill(index: number) {
         color: var(--Crazy-Blue, #2a45ee);
     }
     .skills-section {
+        margin-top: 2rem;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -125,7 +126,7 @@ function removeSkill(index: number) {
 
         p {
         color: var(--Crazy-Blue, #2a45ee);
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         font-style: normal;
         font-weight: 400;
         line-height: normal;

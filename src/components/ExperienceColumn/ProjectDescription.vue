@@ -52,9 +52,9 @@
           </div>
 
           <p
-          contenteditable="true"
-          @blur="updateProfileField('experiences.description', $event.target?.innerText)"
-          class="editable-text"
+            contenteditable="true"
+            @blur="updateProfileField('experiences.description', $event.target?.innerText)"
+            class="editable-text"
           >{{ experience?.description || "Legg til tekst" }}</p>
         </li>
       </ul>
@@ -73,7 +73,7 @@ const editingMode = ref(false); // To track if the user is in editing mode
 
 .experience-section {
     width: 100%;
-    
+
     ul {
     gap: 1rem;
     padding: 0;
@@ -93,7 +93,7 @@ const editingMode = ref(false); // To track if the user is in editing mode
 
             p {
             margin: 0;
-            letter-spacing: 1.2px;
+            letter-spacing: 0.8px;
             line-height: 30px;
             text-align: left;
             }

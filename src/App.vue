@@ -6,4 +6,5 @@ import Preview from "./components/Preview.vue";
   <Preview />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

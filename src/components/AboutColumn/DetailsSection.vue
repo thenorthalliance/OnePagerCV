@@ -4,23 +4,27 @@
       @click="editingMode = true"
       v-click-outside="() => { editingMode = false }"
     >
-      <div class="title-field">
-        <h3>Om {{ profile?.firstname }}</h3>
-        <img 
-          src="./../../assets/icons/editIcon.svg"
-          alt="Edit icon"
-          :class="{ 'edit-icon' : !editingMode }"
-        />
+      <!-- Title and text about consultant -->
+      <div class="about-section">
+        <div class="title-field">
+          <h3>Om {{ profile?.firstname }}</h3>
+          <img 
+            src="./../../assets/icons/editIcon.svg"
+            alt="Edit icon"
+            :class="{ 'edit-icon' : !editingMode }"
+          />
+        </div>
+  
+        <p
+          contenteditable="true"
+          @blur="updateProfileField('bio', $event.target?.innerText)"
+          class="editable-text"
+        >
+          {{ profile?.bio || "Enter you bio" }}
+        </p>
       </div>
-
-      <p
-        contenteditable="true"
-        @blur="updateProfileField('bio', $event.target?.innerText)"
-        class="editable-text"
-      >
-        {{ profile?.bio || "Enter you bio" }}
-      </p>
-
+      
+      <!-- birthyear and location with icons -->
       <div class="details-row">
         <div>
           <span>f. </span>
@@ -46,8 +50,8 @@
             class="residence editable-text"
             >{{
               profile?.placeOfResidence || "Enter your place of residence"
-            }}</span
-          >
+            }}
+          </span>
         </div>
       </div>
     </div>
@@ -62,47 +66,61 @@ const editingMode = ref(false); // To track if the user is in editing mode
 </script>
 
 <style scoped>
-.details-section {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+  .details-section {
+    height: 100%;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .about-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
 
-.details-row {
-  display: flex;
-  flex-direction: row;
-  gap: 2.5rem;
-  align-items: center;
-}
+  .details-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    column-gap: 2.5rem;
 
-.pin-icon {
-  margin-top: 0.1rem;
-  width: 2rem;
-  height: 2rem;
-}
+    div {
+      display: flex;
+      align-items: center;
+      column-gap: 0.4rem;
+    }
+    img {
+      display: flex;
+      align-items: center;
+    }
 
-.residence {
-  margin-top: 0.6rem;
-}
+    .residence {
+      padding-top: 0.3rem;
+    }
+    
+  }
 
-p {
-  font-family: TiemposFineLight;
-  font-size: 1.5rem;
-  margin: 0;
-}
+  .pin-icon {
+    width: 2rem;
+    height: 2rem;
+  }
 
-div {
-  margin-top: auto;
-  display: flex;
-  flex-direction: row;
-  column-gap: 0.4rem;
-}
+  p {
+    font-family: TiemposFineLight;
+    font-size: 2rem;
+    margin: 0;
+  }
 
-span {
-  color: var(--Black, #323231);
-  font-family: NoAAftenScreen;
-  font-size: 1rem;
-}
+  
+
+  span {
+    color: var(--Black, #323231);
+    font-family: NoAAftenScreen;
+    font-size: 1.5rem;
+  }
 
 </style>
