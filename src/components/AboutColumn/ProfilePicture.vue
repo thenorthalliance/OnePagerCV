@@ -21,7 +21,7 @@ import { ProfileToRender } from "../../types";
 defineProps({
   size: {
     type: Number,
-    default: 120,
+    default: 200,
   },
 });
 
@@ -49,8 +49,8 @@ const onImageChange = (event) => {
 }
 
 .frame {
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   border: 2px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
