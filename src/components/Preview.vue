@@ -36,6 +36,7 @@ import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
 
+//TODO: make red-dotted line disapear when height is reached 
 // import { ref, onMounted, onUnmounted } from "vue";
 
 // const hideLine = ref(false);
