@@ -36,6 +36,39 @@ import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
 import html2pdf from 'html2pdf.js';
 
+import { defineQuery, PortableText, SanityImageAssetDocument } from "next-sanity";
+import  { client }  from  "../../sanity/client";
+import  imageUrlBuilder  from  "@sanity/image-url"
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+// import { useSanityClient } from 'vue-sanity';
+const  builder = imageUrlBuilder(client);
+
+
+const EMPLOYEES_QUERY = defineQuery(`*[
+  _type == "employee"
+]
+// {
+//   firstname,
+//   lastname,
+//   image,
+//   birthYear,
+//   residence,
+//   jobTitle,
+//   skills,
+//   description,
+//   experience,
+//   qualifications
+// }
+`);
+
+
+const { projectId, dataset } = client.config();
+const urlFor = ( source: SanityImageSource) =>
+  projectId && dataset
+    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    : null; 
+
+    
 //TODO: make red-dotted line disapear when height is reached 
 // import { ref, onMounted, onUnmounted } from "vue";
 
@@ -92,17 +125,18 @@ const dummyProfile = {
   ],
 };
 
-const blankProfile = {
-  name: '',
-  profilePicture: { src: '', alt: '' },
-  birthYear: undefined,
-  placeOfResidence: '',
-  title: '',
-  skills: [],
-  bio: '',
-  experiences: [],
-  qualifications: [],
-};
+
+// const blankProfile = {
+//   name: '',
+//   profilePicture: { src: '', alt: '' },
+//   birthYear: undefined,
+//   placeOfResidence: '',
+//   title: '',
+//   skills: [],
+//   bio: '',
+//   experiences: [],
+//   qualifications: [],
+// };
 
 // Initialize empty profile object
 const profile = reactive<ProfileToRender>(dummyProfile);
@@ -120,6 +154,40 @@ provide('updateProfileField', updateProfileField);
 watch(profile, () => {
   console.log('Profile updated:', profile);
 }, { deep: true });
+
+
+// Send profile to Sanity
+const profileToSanity = {
+  _type: 'employee',
+  _id: 'f6f84924-8f66-48f9-aa88-0b4cec377825',
+  firstname: profile?.firstname,
+  lastname: profile?.lastname,
+  // image: {
+  //   _type: 'image',
+  //   asset: {
+  //     _ref: profile?.profilePicture?.src,
+  //     _type: 'reference',
+  //   },
+  // },
+  birthYear: profile?.birthYear,
+  residence: profile?.placeOfResidence,
+  jobTitle: profile?.title,
+  skills: profile?.skills,
+  description: profile?.description,
+  experience: profile?.experiences,
+  qualifications: profile?.qualifications,
+};
+
+// console.log('Profile: ', JSON.stringify(profile, null, 2));
+
+client.createOrReplace(profileToSanity).then((res) => {
+  // console.log('Profile: ', profileToSanity);
+  console.log('Profile sent to Sanity:', res);
+});
+
+client.fetch(EMPLOYEES_QUERY).then((data) => {
+  console.log('data', data);
+});
 
 const exportToPDF = () => {
   const element = document.querySelector("#layout"); // Select the specific component
