@@ -105,7 +105,7 @@ const dummyProfile = {
   title: 'Team Lead Customer Experience & Advisor',
   skillsTitle: 'Ekspertise innen',
   skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
-  bio: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
+  description: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
   experienceTitle: 'Utvalgt erfaring',
   experiences: [
     {
@@ -127,19 +127,6 @@ const dummyProfile = {
     { label: 'Kurs', detail: 'Fart og flyt, FINN' },
   ],
 };
-
-
-// const blankProfile = {
-//   name: '',
-//   profilePicture: { src: '', alt: '' },
-//   birthYear: undefined,
-//   placeOfResidence: '',
-//   title: '',
-//   skills: [],
-//   bio: '',
-//   experiences: [],
-//   qualifications: [],
-// };
 
 // Initialize empty profile object
 const profile = reactive<ProfileToRender>(dummyProfile);

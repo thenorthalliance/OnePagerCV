@@ -28,3 +28,4 @@ export const formatDate = (date: Date): string => {
   })
   .replace(/\//g, "."); //replace / with .
 };
+

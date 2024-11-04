@@ -17,10 +17,11 @@
   
         <p
           contenteditable="true"
-          @blur="updateProfileField('bio', $event.target?.innerText)"
+          @blur="
+            updateProfile('bio', ($event.target as HTMLElement)?.innerText)"
           class="editable-text"
         >
-          {{ profile?.bio || "Enter you bio" }}
+          {{ profile?.description || "Enter description about the consultant" }}
         </p>
       </div>
       
@@ -30,7 +31,7 @@
           <span>f. </span>
           <span
             contenteditable="true"
-            @blur="updateProfileField('birthYear', $event.target?.innerText)"
+            @blur="updateProfile('birthYear', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >{{ profile?.birthYear || "Enter your birth year" }}</span
           >
@@ -45,7 +46,7 @@
           <span
             contenteditable="true"
             @blur="
-              updateProfileField('placeOfResidence', $event.target?.innerText)
+              updateProfile('placeOfResidence', ($event.target as HTMLElement)?.innerText)
             "
             class="residence editable-text"
             >{{
@@ -59,10 +60,17 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue";
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+import { ProfileToRender } from "../../types";
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
 
+
+const updateProfile = (field: string, value: any) => {
+  if (updateProfileField) {
+    updateProfileField(field, value);
+  }
+};
 </script>
 
 <style scoped>

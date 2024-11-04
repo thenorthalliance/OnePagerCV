@@ -22,7 +22,9 @@ export interface ProfileToRender {
   title?: string;
   skills?: string[];
   description?: string;
+  experiencesTitle?: string;
   experiences?: ExperienceToRender[];
+  qualificationsTitle?: string;
   qualifications?: LabelWithDetail[];
 }
 
