@@ -11,7 +11,7 @@
           contenteditable="true"
           @blur="
             updateProfile('descriptionTtile', ($event.target as HTMLElement)?.innerText)"
-          class="editable-text"
+          class="editable-text about-title"
           >Om {{ profile?.firstname || "Navn" }}</h3>
           <img 
             src="./../../assets/icons/EditIcon.svg"
@@ -81,6 +81,7 @@ const updateProfile = (field: string, value: any) => {
 <style scoped>
   .details-section {
     height: 100%;
+    width: 100%;
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -88,12 +89,12 @@ const updateProfile = (field: string, value: any) => {
     gap: 2rem;
   }
   .about-section {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 1rem;
   }
+
 
   .details-row {
     display: flex;
@@ -127,8 +128,6 @@ const updateProfile = (field: string, value: any) => {
     font-size: 2rem;
     margin: 0;
   }
-
-  
 
   span {
     color: var(--Black, #323231);

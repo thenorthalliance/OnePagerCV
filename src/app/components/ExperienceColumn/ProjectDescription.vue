@@ -109,6 +109,7 @@ const updateProfile = (field: string, value: any) => {
 <style scoped> 
 .experience-section {
     width: 100%;
+    min-height: 40rem;
 
     ul {
     gap: 1rem;

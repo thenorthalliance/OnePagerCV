@@ -247,23 +247,17 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
     position: absolute;
     left: 0;
     top: 0;
-    /* max-height: auto; */
-    /* min-height: 1344px;*/
-    /* aspect-ratio: 16 / 9; */
-    /* padding: 1rem 1.5rem; *TODO: sjekk tall med figma */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     background: var(--White, #FFF);
-    /* box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); */
+    box-shadow: none;
   }
 }
 
 #layout {
     width: 1920px;
-    /* max-height: auto; */
-    /* min-height: 1344px;*/
     aspect-ratio: 16 / 9;
     padding: 1rem 1.5rem; /*TODO: sjekk tall med figma */
     display: flex;
@@ -271,7 +265,7 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
     align-items: center;
     gap: 1.5rem;
     background: var(--White, #FFF);
-    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: none;
   }
 
   .page-header {
