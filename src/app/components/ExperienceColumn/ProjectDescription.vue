@@ -81,7 +81,6 @@ const updateProfile = (field: string, value: any) => {
       const pathArray = field.replace(/\[(\d+)\]/g, '.$1').split('.');
 
       let currentLevel: any = profile;
-      let index: any = null;
 
       for (let i = 0; i < pathArray.length - 1; i++) {
         const key = pathArray[i];
@@ -90,7 +89,6 @@ const updateProfile = (field: string, value: any) => {
           return;
         }
         currentLevel = currentLevel[key];
-        index = key;
       }
 
       const lastKey = pathArray[pathArray.length - 1];
