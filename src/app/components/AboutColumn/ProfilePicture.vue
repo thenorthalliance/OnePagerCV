@@ -26,12 +26,13 @@ defineProps({
 });
 
 // Injecting reactive profile object and update function
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 
-const onImageChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
+const onImageChange = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file && updateProfileField) {
     // Call the updateProfileField function to update profilePicture in the reactive profile
     updateProfileField("profilePicture", {
       src: URL.createObjectURL(file),

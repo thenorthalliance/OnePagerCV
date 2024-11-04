@@ -14,23 +14,20 @@
 
 // Initialy only for redering, but can now be editable. Renaming might be needed.
 export interface ProfileToRender {
-  name?: string;
+  firstname?: string;
+  lastname?: string;
   profilePicture?: { src: string; alt: string };
   birthYear?: number;
   placeOfResidence?: string;
   title?: string;
   skills?: string[];
-  bio?: string;
+  description?: string;
+  experiencesTitle?: string;
   experiences?: ExperienceToRender[];
+  qualificationsTitle?: string;
   qualifications?: LabelWithDetail[];
 }
 
-/* interface Experience {
-  projectName: string;
-  startDate?: Date;
-  endDate?: Date;
-  description: SelectableText[];
-} */
 
 interface ExperienceToRender {
   projectName: string;
@@ -38,11 +35,6 @@ interface ExperienceToRender {
   endDate?: Date;
   description: string;
 }
-
-/* interface SelectableText {
-  isSelected: boolean;
-  richText: string;
-} */
 
 interface LabelWithDetail {
   label: string;

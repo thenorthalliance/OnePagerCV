@@ -7,23 +7,23 @@
         <div class="title-field">
             <h2
                 contenteditable="true"
-                @blur="updateProfileField('experiencesTitle', $event.target?.innerText)"
+                @blur="updateProfile('experiencesTitle', ($event.target as HTMLElement)?.innerText)"
                 class="editable-text"
             >
                 {{profile?.experiencesTitle || "Utvalgt erfaring"}}
             </h2>
             <img 
-                src="./../../assets/icons/editIcon.svg"
+                src="./../../assets/icons/EditIcon.svg"
                 alt="Edit icon"
                 :class="{ 'edit-icon' : !editingMode }"
             />
         </div>
       <ul>
-        <li v-for="experience in profile.experiences" :key="experience.projectName">
+        <li v-for="experience in profile?.experiences" :key="experience.projectName">
           <div class="h3EditableTitle">
             <h3
               contenteditable="true"
-              @blur="updateProfileField('experiences.startDate', $event.target?.innerText)"
+              @blur="updateProfile('experiences.startDate', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >
               {{ experience.startDate ? formatDate(experience.startDate) : 'MM:ÅÅ' }}
@@ -33,7 +33,7 @@
 
             <h3
             contenteditable="true"
-              @blur="updateProfileField('experiences.endDate', $event.target?.innerText)"
+              @blur="updateProfile('experiences.endDate', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >  
               {{ experience.endDate ? formatDate(experience.endDate) : 'MM:ÅÅ' }} 
@@ -43,7 +43,7 @@
 
             <h3
             contenteditable="true"
-              @blur="updateProfileField('experiences.projectName', $event.target?.innerText)"
+              @blur="updateProfile('experiences.projectName', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >
               {{ experience.projectName || "Prosjeknavn, Kunde" }}
@@ -53,7 +53,7 @@
 
           <p
             contenteditable="true"
-            @blur="updateProfileField('experiences.description', $event.target?.innerText)"
+            @blur="updateProfile('experiences.description', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
           >{{ experience?.description || "Legg til tekst" }}</p>
         </li>
@@ -64,13 +64,20 @@
 <script setup lang="ts">
 import { ref, inject } from "vue";
 import { formatDate } from "../../helpers";
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+import { ProfileToRender } from "../../types";
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+
+const updateProfile = (field: string, value: any) => {
+  if (updateProfileField) {
+    updateProfileField(field, value);
+  }
+};
 </script>
 
-<style scoped> 
 
+<style scoped> 
 .experience-section {
     width: 100%;
 

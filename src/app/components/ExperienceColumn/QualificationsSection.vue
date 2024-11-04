@@ -7,23 +7,23 @@
         <div class="title-field">
             <h2
                 contenteditable="true"
-                @blur="updateProfileField('qualificationsTitle', $event.target?.innerText)"
+                @blur="updateProfile('qualificationsTitle', ($event.target as HTMLElement)?.innerText)"
                 class="editable-text"
             >
                 {{profile?.qualificationsTitle || "Utdanning, kurs og sertifiseringer"}}
             </h2>
             <img 
-                src="./../../assets/icons/editIcon.svg"
+                src="./../../assets/icons/EditIcon.svg"
                 alt="Edit icon"
                 :class="{ 'edit-icon' : !editingMode }" 
             />
         </div>
       <ul>
-        <li v-for="qualification in profile.qualifications" :key="qualification.detail">
+        <li v-for="qualification in profile?.qualifications" :key="qualification.detail">
           <div class="h3EditableTitle">
             <h3
               contenteditable="true"
-              @blur="updateProfileField('qualifications.label', $event.target?.innerText)"
+              @blur="updateProfile('qualifications.label', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >{{ qualification?.label || "Utdanning, kurs eller sertifiseringsnavn" }}
             </h3>
@@ -32,7 +32,7 @@
 
             <p
             contenteditable="true"
-            @blur="updateProfileField('qualifications?.detail', $event.target?.innerText)"
+            @blur="updateProfile('qualifications?.detail', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >{{ qualification.detail || "Sted, År eller Beskrivelse"}}</p>
           </div>
@@ -43,9 +43,16 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue";
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+import { ProfileToRender } from "../../types";
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+
+const updateProfile = (field: string, value: any) => {
+  if (updateProfileField) {
+    updateProfileField(field, value);
+  }
+};
 </script>
 
 <style scoped>

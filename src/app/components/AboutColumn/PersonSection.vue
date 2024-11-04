@@ -12,21 +12,21 @@
         
             <h1
             contenteditable="true"
-            @blur="updateProfileField('name', $event.target?.innerText)"
+            @blur="updateProfile('name', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >
             {{ profile?.firstname + " " + profile?.lastname || "Enter your name" }}
             </h1>
             <h2
             contenteditable="true"
-            @blur="updateProfileField('title', $event.target?.innerText)"
+            @blur="updateProfile('title', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >
             {{ profile?.title || "Enter your title" }}
             </h2>
         </div>
         <img 
-            src="./../../assets/icons/editIcon.svg"
+            src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
             :class="{ 'edit-icon' : !editingMode }"
         />
@@ -36,9 +36,16 @@
 <script setup lang="ts">
 import { ref, inject } from "vue";
 import ProfilePicture from "./ProfilePicture.vue";
-const profile = inject("profile");
-const updateProfileField = inject("updateProfileField");
+import { ProfileToRender } from "../../types";
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+
+const updateProfile = (field: string, value: any) => {
+  if (updateProfileField) {
+    updateProfileField(field, value);
+  }
+};
 </script>
 
 <style scoped>

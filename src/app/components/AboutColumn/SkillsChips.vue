@@ -7,11 +7,11 @@
     <div class="title-field">
         <h3
             contenteditable="true"
-            @blur="editingMode && updateProfileField('skillsTitle', $event.target?.innerText)"
+            @blur="editingMode && updateProfile('skillsTitle', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
         >Ekspertise innen</h3>
         <img 
-            src="./../../assets/icons/editIcon.svg"
+            src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
             :class="{ 'edit-icon' : !editingMode }"
         />
@@ -26,7 +26,7 @@
             <div>
                 <p
                 :contenteditable="editingMode"
-                @blur="editingMode && updateProfileField('skill', $event.target?.innerText)"
+                @blur="editingMode && updateProfile('skill', ($event.target as HTMLElement)?.innerText)"
                 :class="{ 'editable-text': editingMode }"
                 
                 >
@@ -61,11 +61,18 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue";
+import { ProfileToRender } from "../../types";
 // Injecting reactive profile object and update function
-const profile = inject("profile");
+const profile = inject<ProfileToRender>("profile");
 const hoveredIndex = ref(-1); // To track which item is being hovered
-const updateProfileField = inject("updateProfileField");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+
+const updateProfile = (field: string, value: any) => {
+  if (updateProfileField) {
+    updateProfileField(field, value);
+  }
+};
 
 // Hover event handler
 function hoverEvent(index: number) {
