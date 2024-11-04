@@ -2,10 +2,11 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">CV1P</h1>
-      <button @click="exportToPDF">Print CV</button>
+      <!-- <button @click="exportToPDF">Print CV</button> -->
+      <button @click="handlePrint">Print CV</button>
     </div>
 
-    <!-- This is the preview of the CV -->
+    <!-- Content to be printet -->
     <div id="layout" ref="cvPreview">
 
       <div class="header">
@@ -34,15 +35,17 @@ import { reactive, provide, watch } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import { ProfileToRender } from '../types';
-import html2pdf from 'html2pdf.js';
 
-import { defineQuery, PortableText, SanityImageAssetDocument } from "next-sanity";
+import { defineQuery } from "next-sanity";
 import  { client }  from  "../../sanity/client";
-import  imageUrlBuilder  from  "@sanity/image-url"
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+// import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
-const  builder = imageUrlBuilder(client);
+// const  builder = imageUrlBuilder(client);
 
+// Function to trigger the print dialog
+const handlePrint = () => {
+  window.print()
+}
 
 const EMPLOYEES_QUERY = defineQuery(`*[
   _type == "employee"
@@ -62,11 +65,11 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 `);
 
 
-const { projectId, dataset } = client.config();
-const urlFor = ( source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null; 
+// const { projectId, dataset } = client.config();
+// const urlFor = ( source: SanityImageSource) =>
+//   projectId && dataset
+//     ? imageUrlBuilder({ projectId, dataset }).image(source)
+//     : null; 
 
     
 //TODO: make red-dotted line disapear when height is reached 
@@ -189,29 +192,53 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
   console.log('data', data);
 });
 
-const exportToPDF = () => {
-  const element = document.querySelector("#layout"); // Select the specific component
-  const options = {
-    margin: [0, 5, 0, 5], //top, left, bottom, right
-    filename: "cv-preview.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { width: 1920, height: 1400 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-  };
-
-  html2pdf().from(element).set(options).save(); // Convert the content to PDF and download it
-};
 </script>
 
 
 
 <style>
+@media print {
+
+  @page {
+    margin: 0;
+  }
+
+  #app {
+    margin: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #layout, #layout * {
+    visibility: visible;
+  }
+
   #layout {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* max-height: auto; */
+    /* min-height: 1344px;*/
+    /* aspect-ratio: 16 / 9; */
+    /* padding: 1rem 1.5rem; *TODO: sjekk tall med figma */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--White, #FFF);
+    /* box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25); */
+  }
+}
+
+#layout {
     width: 1920px;
     /* max-height: auto; */
     /* min-height: 1344px;*/
     aspect-ratio: 16 / 9;
-    padding: 1rem 1.5rem; /**TODO: sjekk tall med figma */
+    padding: 1rem 1.5rem; /*TODO: sjekk tall med figma */
     display: flex;
     flex-direction: column;
     align-items: center;
