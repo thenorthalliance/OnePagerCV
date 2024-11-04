@@ -1,4 +1,3 @@
-import { ProfileToRender } from "./types";
 
 /* export const transformProfileToRender = (profile: Profile): ProfileToRender => {
   return {

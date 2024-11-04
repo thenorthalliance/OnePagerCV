@@ -1,12 +1,3 @@
-// import { createClient } from "next-sanity";
-
-// export const client = createClient({
-//   projectId: "osn0rama",
-//   dataset: "development",
-//   apiVersion: "2024-01-01",
-//   useCdn: false,
-// });
-
 import { createClient } from "@sanity/client";
 
 export const client = createClient({
