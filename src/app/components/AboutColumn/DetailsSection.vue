@@ -94,8 +94,7 @@ const updateProfile = (field: string, value: any) => {
     justify-content: flex-start;
     gap: 1rem;
   }
-
-
+  
   .details-row {
     display: flex;
     flex-direction: row;
