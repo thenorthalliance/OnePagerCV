@@ -13,7 +13,7 @@
                 {{profile?.qualificationsTitle || "Utdanning, kurs og sertifiseringer"}}
             </h2>
             <img 
-                src="./../../assets/icons/editIcon.svg"
+                src="./../../assets/icons/EditIcon.svg"
                 alt="Edit icon"
                 :class="{ 'edit-icon' : !editingMode }" 
             />

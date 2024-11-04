@@ -13,7 +13,7 @@
                 {{profile?.experiencesTitle || "Utvalgt erfaring"}}
             </h2>
             <img 
-                src="./../../assets/icons/editIcon.svg"
+                src="./../../assets/icons/EditIcon.svg"
                 alt="Edit icon"
                 :class="{ 'edit-icon' : !editingMode }"
             />

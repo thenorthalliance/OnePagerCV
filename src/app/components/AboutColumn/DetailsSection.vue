@@ -9,7 +9,7 @@
         <div class="title-field">
           <h3>Om {{ profile?.firstname }}</h3>
           <img 
-            src="./../../assets/icons/editIcon.svg"
+            src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
             :class="{ 'edit-icon' : !editingMode }"
           />
