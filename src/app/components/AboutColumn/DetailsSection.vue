@@ -7,7 +7,12 @@
       <!-- Title and text about consultant -->
       <div class="about-section">
         <div class="title-field">
-          <h3>Om {{ profile?.firstname }}</h3>
+          <h3
+          contenteditable="true"
+          @blur="
+            updateProfile('descriptionTtile', ($event.target as HTMLElement)?.innerText)"
+          class="editable-text"
+          >Om {{ profile?.firstname || "Navn" }}</h3>
           <img 
             src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
@@ -18,10 +23,10 @@
         <p
           contenteditable="true"
           @blur="
-            updateProfile('bio', ($event.target as HTMLElement)?.innerText)"
+            updateProfile('description', ($event.target as HTMLElement)?.innerText)"
           class="editable-text"
         >
-          {{ profile?.description || "Enter description about the consultant" }}
+          {{ profile?.description || "Legg til tekst" }}
         </p>
       </div>
       
@@ -33,7 +38,7 @@
             contenteditable="true"
             @blur="updateProfile('birthYear', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
-            >{{ profile?.birthYear || "Enter your birth year" }}</span
+            >{{ profile?.birthYear || "ÅÅÅÅ" }}</span
           >
         </div>
 
@@ -50,7 +55,7 @@
             "
             class="residence editable-text"
             >{{
-              profile?.placeOfResidence || "Enter your place of residence"
+              profile?.placeOfResidence || "Bosted"
             }}
           </span>
         </div>

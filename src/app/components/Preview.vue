@@ -27,7 +27,7 @@
   </div>
 
   <!-- <div :class="{ 'sticky-line': true, 'hidden-line': hideLine }"></div> -->
-  <div class="sticky-line"></div>
+  <!-- <div class="sticky-line"></div> -->
 </template>
 
 <script setup lang="ts">
@@ -96,40 +96,80 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 //   window.removeEventListener("scroll", checkLineVisibility);
 // });
 
-const dummyProfile = {
-  firstname: 'Christian M',
-  lastname: 'Sinding-Larsen',
-  profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
-  birthYear: 1990,
-  placeOfResidence: 'Oslo',
-  title: 'Team Lead Customer Experience & Advisor',
+// const dummyProfile = {
+//   firstname: 'Christian M',
+//   lastname: 'Sinding-Larsen',
+//   profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
+//   birthYear: 1990,
+//   placeOfResidence: 'Oslo',
+//   title: 'Team Lead Customer Experience & Advisor',
+//   skillsTitle: 'Ekspertise innen',
+//   skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
+//   description: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
+//   experienceTitle: 'Utvalgt erfaring',
+//   experiences: [
+//     {
+//       projectName: 'Avonova Web',
+//       startDate: new Date('2022-09-01'),
+//       endDate: new Date('2024-04-01'),
+//       description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en ... Magnus tok ansvar for vedlikehold og videreutvikling av pipeline-ene i Azure DevOps, samt optimalisering av trafikkflyten med Azure Frontdoor. Som tech lead sikret han balansen mellom tekniske og forretningsmessige mål, og håndterte teknisk gjeld for å sikre langsiktig skalerbarhet.',
+//     }, {
+//       projectName: 'Avonova Web',
+//       startDate: new Date('2022-09-01'),
+//       endDate: new Date('2024-04-01'),
+//       description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en enhetlig identitet på tvers av land, samt en kursbookingsløsning som integrerte data fra flere systemer via et Next.js API.',
+//     },
+//   ],
+//   qualificationTitle: 'Utdanning, kurs og sertifiseringer',
+//   qualifications: [
+//     { label: 'Bachelor of Science', detail: 'Information Technology' },
+//     { label: 'Kurs', detail: 'Sanity certified developer' },
+//     { label: 'Kurs', detail: 'Fart og flyt, FINN' },
+//   ],
+// };
+
+const newProfile = reactive<ProfileToRender>({
+  firstname: '',
+  lastname: '',
+  profilePicture: { src: '', alt: '' },
+  birthYear: 0,
+  placeOfResidence: '',
+  title: '',
   skillsTitle: 'Ekspertise innen',
-  skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
-  description: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
+  skills: [],
+  description: '',
   experienceTitle: 'Utvalgt erfaring',
   experiences: [
+  {
+      projectName: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+    }, 
     {
-      projectName: 'Avonova Web',
-      startDate: new Date('2022-09-01'),
-      endDate: new Date('2024-04-01'),
-      description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en ... Magnus tok ansvar for vedlikehold og videreutvikling av pipeline-ene i Azure DevOps, samt optimalisering av trafikkflyten med Azure Frontdoor. Som tech lead sikret han balansen mellom tekniske og forretningsmessige mål, og håndterte teknisk gjeld for å sikre langsiktig skalerbarhet.',
-    }, {
-      projectName: 'Avonova Web',
-      startDate: new Date('2022-09-01'),
-      endDate: new Date('2024-04-01'),
-      description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en enhetlig identitet på tvers av land, samt en kursbookingsløsning som integrerte data fra flere systemer via et Next.js API.',
+      projectName: '',
+      startDate: '',
+      endDate: '',
+      description: '',
     },
+    {
+      projectName: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+    }
+
   ],
-  qualificationTitle: 'Utdanning, kurs og sertifiseringer',
+  qualificationTitle: 'Utvalgt erfaring',
   qualifications: [
-    { label: 'Bachelor of Science', detail: 'Information Technology' },
-    { label: 'Kurs', detail: 'Sanity certified developer' },
-    { label: 'Kurs', detail: 'Fart og flyt, FINN' },
+    { label: '', detail: '' },
+    { label: '', detail: '' },
+    { label: '', detail: '' },
   ],
-};
+});
 
 // Initialize empty profile object
-const profile = reactive<ProfileToRender>(dummyProfile);
+const profile = reactive<ProfileToRender>(newProfile);
 
 // Generic function to update any field in the profile
 const updateProfileField = (field: keyof ProfileToRender, value: any) => {

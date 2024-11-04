@@ -20,19 +20,21 @@ export interface ProfileToRender {
   birthYear?: number;
   placeOfResidence?: string;
   title?: string;
+  skillsTitle?: string;
   skills?: string[];
+  descriptionTitle?: string;
   description?: string;
-  experiencesTitle?: string;
+  experienceTitle?: string;
   experiences?: ExperienceToRender[];
-  qualificationsTitle?: string;
+  qualificationTitle?: string;
   qualifications?: LabelWithDetail[];
 }
 
 
 interface ExperienceToRender {
   projectName: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   description: string;
 }
 
