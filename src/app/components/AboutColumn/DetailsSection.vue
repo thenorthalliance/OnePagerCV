@@ -7,7 +7,12 @@
       <!-- Title and text about consultant -->
       <div class="about-section">
         <div class="title-field">
-          <h3>Om {{ profile?.firstname }}</h3>
+          <h3
+          contenteditable="true"
+          @blur="
+            updateProfile('descriptionTtile', ($event.target as HTMLElement)?.innerText)"
+          class="editable-text about-title"
+          >Om {{ profile?.firstname || "Navn" }}</h3>
           <img 
             src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
@@ -18,10 +23,10 @@
         <p
           contenteditable="true"
           @blur="
-            updateProfile('bio', ($event.target as HTMLElement)?.innerText)"
+            updateProfile('description', ($event.target as HTMLElement)?.innerText)"
           class="editable-text"
         >
-          {{ profile?.description || "Enter description about the consultant" }}
+          {{ profile?.description || "Legg til tekst" }}
         </p>
       </div>
       
@@ -33,7 +38,7 @@
             contenteditable="true"
             @blur="updateProfile('birthYear', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
-            >{{ profile?.birthYear || "Enter your birth year" }}</span
+            >{{ profile?.birthYear || "ÅÅÅÅ" }}</span
           >
         </div>
 
@@ -50,7 +55,7 @@
             "
             class="residence editable-text"
             >{{
-              profile?.placeOfResidence || "Enter your place of residence"
+              profile?.placeOfResidence || "Bosted"
             }}
           </span>
         </div>
@@ -76,6 +81,7 @@ const updateProfile = (field: string, value: any) => {
 <style scoped>
   .details-section {
     height: 100%;
+    width: 100%;
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -83,13 +89,12 @@ const updateProfile = (field: string, value: any) => {
     gap: 2rem;
   }
   .about-section {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 1rem;
   }
-
+  
   .details-row {
     display: flex;
     flex-direction: row;
@@ -122,8 +127,6 @@ const updateProfile = (field: string, value: any) => {
     font-size: 2rem;
     margin: 0;
   }
-
-  
 
   span {
     color: var(--Black, #323231);

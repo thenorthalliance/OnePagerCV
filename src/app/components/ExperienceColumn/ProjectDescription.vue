@@ -10,7 +10,7 @@
                 @blur="updateProfile('experiencesTitle', ($event.target as HTMLElement)?.innerText)"
                 class="editable-text"
             >
-                {{profile?.experiencesTitle || "Utvalgt erfaring"}}
+                {{profile?.experienceTitle || "Utvalgt erfaring"}}
             </h2>
             <img 
                 src="./../../assets/icons/EditIcon.svg"
@@ -19,31 +19,31 @@
             />
         </div>
       <ul>
-        <li v-for="experience in profile?.experiences" :key="experience.projectName">
+        <li v-for="(experience, index) in profile?.experiences" :key="experience.projectName">
           <div class="h3EditableTitle">
             <h3
               contenteditable="true"
-              @blur="updateProfile('experiences.startDate', ($event.target as HTMLElement)?.innerText)"
+              @blur="updateProfile('experiences['+index+'].startDate', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >
-              {{ experience.startDate ? formatDate(experience.startDate) : 'MM:ÅÅ' }}
+              {{ experience.startDate || 'MM.ÅÅ' }}
             </h3>
 
             <h3>-</h3>
 
             <h3
             contenteditable="true"
-              @blur="updateProfile('experiences.endDate', ($event.target as HTMLElement)?.innerText)"
+              @blur="updateProfile('experiences['+index+'].endDate', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >  
-              {{ experience.endDate ? formatDate(experience.endDate) : 'MM:ÅÅ' }} 
+              {{ experience.endDate || 'MM.ÅÅ' }} 
             </h3>
 
             <h3 class="colon">:</h3>
 
             <h3
             contenteditable="true"
-              @blur="updateProfile('experiences.projectName', ($event.target as HTMLElement)?.innerText)"
+              @blur="updateProfile('experiences['+index+'].projectName', ($event.target as HTMLElement)?.innerText)"
               class="editable-text"
             >
               {{ experience.projectName || "Prosjeknavn, Kunde" }}
@@ -63,7 +63,6 @@
 
 <script setup lang="ts">
 import { ref, inject } from "vue";
-import { formatDate } from "../../helpers";
 import { ProfileToRender } from "../../types";
 const profile = inject<ProfileToRender>("profile");
 const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
@@ -71,8 +70,36 @@ const editingMode = ref(false); // To track if the user is in editing mode
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {
-    updateProfileField(field, value);
-  }
+    if (!profile) return;
+
+      if(field === 'experienceTitle') {
+        // updateProfileField('experienceTitle', value);
+        profile.experienceTitle = value;
+        return;
+      }
+      // Split the fieldPath by dots or array-like syntax (e.g., experiences[1].projectName)
+      const pathArray = field.replace(/\[(\d+)\]/g, '.$1').split('.');
+
+      let currentLevel: any = profile;
+
+      for (let i = 0; i < pathArray.length - 1; i++) {
+        const key = pathArray[i];
+        if (!(key in currentLevel)) {
+          console.error(`Key ${key} not found in profile`);
+          return;
+        }
+        currentLevel = currentLevel[key];
+      }
+
+      const lastKey = pathArray[pathArray.length - 1];
+      currentLevel[lastKey] = value;
+
+      // Trigger reactivity by reassigning the updated array if needed
+      if (pathArray[0] === 'experiences') {
+        profile.experiences = [...profile?.experiences || []];
+      }
+    }
+  
 };
 </script>
 
@@ -80,6 +107,7 @@ const updateProfile = (field: string, value: any) => {
 <style scoped> 
 .experience-section {
     width: 100%;
+    min-height: 40rem;
 
     ul {
     gap: 1rem;

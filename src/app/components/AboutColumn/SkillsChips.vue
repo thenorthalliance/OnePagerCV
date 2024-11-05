@@ -63,10 +63,11 @@
 import { ref, inject } from "vue";
 import { ProfileToRender } from "../../types";
 // Injecting reactive profile object and update function
-const profile = inject<ProfileToRender>("profile");
-const hoveredIndex = ref(-1); // To track which item is being hovered
-const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+const hoveredIndex = ref(-1); // To track which item is being hovered
+console.log('hoveredIndex', hoveredIndex);
+const profile = inject<ProfileToRender>("profile");
+const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {

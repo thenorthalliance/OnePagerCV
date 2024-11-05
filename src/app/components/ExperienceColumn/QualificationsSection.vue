@@ -10,7 +10,7 @@
                 @blur="updateProfile('qualificationsTitle', ($event.target as HTMLElement)?.innerText)"
                 class="editable-text"
             >
-                {{profile?.qualificationsTitle || "Utdanning, kurs og sertifiseringer"}}
+                {{profile?.qualificationTitle || "Utdanning, kurs og sertifiseringer"}}
             </h2>
             <img 
                 src="./../../assets/icons/EditIcon.svg"
