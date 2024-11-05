@@ -107,7 +107,11 @@ const updateProfile = (field: string, value: any) => {
 <style scoped> 
 .experience-section {
     width: 100%;
-    min-height: 40rem;
+    min-height: 20rem;
+
+    h2 {
+      font-size: 1.3rem;
+    }
 
     ul {
     gap: 1rem;
@@ -117,11 +121,11 @@ const updateProfile = (field: string, value: any) => {
             margin-bottom: 1.4rem;
 
             .colon{
-            margin-left: -0.3em;
+            margin-left: -0.5em;
             }
             
             h3 {
-            margin: 0 0 0.6rem 0;
+            margin: 0 0 0.2rem 0;
             line-height: normal;
             text-align: left;
             }
@@ -129,7 +133,7 @@ const updateProfile = (field: string, value: any) => {
             p {
             margin: 0;
             letter-spacing: 0.8px;
-            line-height: 30px;
+            line-height: 1.5rem;
             text-align: left;
             }
         }

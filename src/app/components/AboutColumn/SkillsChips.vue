@@ -101,7 +101,7 @@ function removeSkill(index: number) {
         color: var(--Crazy-Blue, #2a45ee);
     }
     .skills-section {
-        margin-top: 2rem;
+        margin-top: 1rem;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -110,6 +110,7 @@ function removeSkill(index: number) {
     }
 
     ul {
+        margin: 0.3rem 0;
         padding: 0;
         display: flex;
         flex-wrap: wrap;
@@ -121,20 +122,20 @@ function removeSkill(index: number) {
         li {
             position: relative;
             display: flex;
-            padding: 1rem 2rem;
+            padding: 0.5rem 1rem;
             border-radius: 40px;
             justify-content: center;
-            border: 1.5px solid var(--Crazy-Blue, #2a45ee);
+            border: 1px solid var(--Crazy-Blue, #2a45ee);
             background: var(--White, #fff);
             box-sizing: border-box;
             width: auto; 
             max-height: 3.6rem;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         p {
         color: var(--Crazy-Blue, #2a45ee);
-        font-size: 1.4rem;
+        font-size: 0.6rem;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
@@ -147,14 +148,14 @@ function removeSkill(index: number) {
         position: absolute;
         top: -0.5rem; /* Adjust as needed */
         right: -0.5rem; /* Adjust as needed */
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
         padding: 0 0 0.3rem 0.05rem;
         background-color: var(--Crazy-Blue, #2a45ee);;
         border: none;
         color: white;
         border-radius: 50%;
-        font-size: 2rem;
+        font-size: 1.5rem;
         text-align: center;
         cursor: pointer;
         display: flex;
@@ -170,8 +171,8 @@ function removeSkill(index: number) {
         }
     }
     .add-icon {
-        width: 1.3rem;
-        height: 1.3rem;
+        width: 1rem;
+        height: 1rem;
         justify-content: center;
     }
 </style>

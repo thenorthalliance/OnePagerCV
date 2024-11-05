@@ -50,8 +50,8 @@ const onImageChange = (event: Event) => {
 }
 
 .frame {
-  width: 200px;
-  height: 200px;
+  width: 130px;
+  height: 130px;
   border: 2px solid #ccc;
   border-radius: 10px;
   overflow: hidden;

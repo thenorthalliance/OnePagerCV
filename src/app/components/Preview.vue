@@ -2,8 +2,9 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">CV1P</h1>
+      <p class="header-text">Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen.</p>
       <!-- <button @click="exportToPDF">Print CV</button> -->
-      <button @click="handlePrint">Print CV</button>
+      <button @click="handlePrint">Export</button>
     </div>
 
     <!-- Content to be printet -->
@@ -228,6 +229,8 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
 
   @page {
     margin: 0;
+    /* size: a3;
+    orientation: landscape; */
   }
 
   #app {
@@ -244,6 +247,7 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
 
   #layout {
     width: 100%;
+    /* height: 100%; */
     position: absolute;
     left: 0;
     top: 0;
@@ -257,15 +261,18 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
 }
 
 #layout {
-    width: 1920px;
+    max-width: 1300px;
+    width: 100%;
+    min-height: 780px;
     aspect-ratio: 16 / 9;
-    padding: 1rem 1.5rem; /*TODO: sjekk tall med figma */
+    padding: 0.8rem 1.5rem; /*TODO: sjekk tall med figma*/
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     background: var(--White, #FFF);
-    box-shadow: none;
+    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
+    overflow: auto;
   }
 
   .page-header {
@@ -273,6 +280,7 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
     justify-content: space-between;
     width: 80vw;
     padding: 0.5rem;
+    gap: 1rem;
   }
 
   .tool-name {
@@ -283,12 +291,19 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
     margin: 2rem 0 0 0;
   }
 
+  .header-text {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    color: white;
+    font-size: 1rem;
+  }
+
   .header {
     align-self: flex-start;
   }
 
   .main {
-    margin-top: 3rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;

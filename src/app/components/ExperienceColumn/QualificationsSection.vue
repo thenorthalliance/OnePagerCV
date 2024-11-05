@@ -58,6 +58,10 @@ const updateProfile = (field: string, value: any) => {
 <style scoped>
     .qualifications-section {
         width: 100%;
+
+        h2 {
+          font-size: 1.3rem;
+        }
     }
     ul {
         padding: 0;

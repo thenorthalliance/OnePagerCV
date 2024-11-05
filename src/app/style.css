@@ -37,21 +37,21 @@ body {
 
 h1 {
   font-family: TiemposFineLightItalic;
-  font-size: 3rem;
+  font-size: 2rem;
   line-height: normal;
 }
 
 h2 {
-  font-size: 2.2rem;
+  font-family: TiemposFineLight;
+  font-size: 1.7rem;
   font-weight: 600;
   margin: 0;
   text-align: left;
-  font-family: TiemposFineLight;
 }
 
 h3 {
   font-family: NoAAftenScreenBold;
-  font-size: 1.7rem;
+  font-size: 0.9rem;
   line-height: 30px;
   margin: 0;
 }
@@ -59,7 +59,7 @@ h3 {
 p {
   color: var(--Black, #323231);
   font-family: NoAAftenScreen;
-  font-size: 1.7rem;
+  font-size: 0.8rem;
   font-style: normal;
   font-weight: 400;
   margin: 0;
@@ -89,11 +89,9 @@ button:focus-visible {
 }
 
 #app {
-  /* max-width: 1280px; */
-  margin: 0 auto 0 10rem;
+  margin: 0 auto 0 3rem;
   text-align: center;
 }
-
 
 .editable-text {
   cursor: pointer;
@@ -111,18 +109,19 @@ button:focus-visible {
 }
 
 .title-field {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
 }
 
 .edit-icon {
-  width: 1.5rem;
-  height: 1.5rem;
   display: none;
+  width: 0.9rem;
+  height: 0.9rem;
 }
+
 /* elements whose class name ends with "-section" */
 [class$="-section"]:hover .edit-icon {
     display: flex;
@@ -134,12 +133,16 @@ button:focus-visible {
   /* margin-bottom: 1rem; */
   
   .colon {
-    margin-left: -0.3em;
+    margin-left: -0.4em;
   }
   h3 {
     letter-spacing: -0.48px;
   }
 
+}
+
+@media print{
+  
 }
 
 @media (prefers-color-scheme: light) {
