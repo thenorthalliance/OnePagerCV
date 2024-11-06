@@ -20,7 +20,7 @@
       </div>
 
       <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
-      <div>
+      <div class="footer">
         <p>www.noaignite.com</p>
       </div>
 
@@ -130,14 +130,14 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 // };
 
 const newProfile = reactive<ProfileToRender>({
-  firstname: '',
-  lastname: '',
+  name: '',
   profilePicture: { src: '', alt: '' },
   birthYear: 0,
   placeOfResidence: '',
   title: '',
   skillsTitle: 'Ekspertise innen',
   skills: [],
+  descriptionTitle: 'Om Navn',
   description: '',
   experienceTitle: 'Utvalgt erfaring',
   experiences: [
@@ -191,8 +191,7 @@ watch(profile, () => {
 const profileToSanity = {
   _type: 'employee',
   _id: 'f6f84924-8f66-48f9-aa88-0b4cec377825',
-  firstname: profile?.firstname,
-  lastname: profile?.lastname,
+  firstname: profile?.name,
   // image: {
   //   _type: 'image',
   //   asset: {
@@ -253,6 +252,7 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
     top: 0;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
     background: var(--White, #FFF);
@@ -263,11 +263,12 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
 #layout {
     max-width: 1300px;
     width: 100%;
-    min-height: 780px;
+    height: 780px;
     aspect-ratio: 16 / 9;
     padding: 0.8rem 1.5rem; /*TODO: sjekk tall med figma*/
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
     background: var(--White, #FFF);
@@ -304,13 +305,18 @@ client.fetch(EMPLOYEES_QUERY).then((data) => {
   }
 
   .main {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    
     gap: 1.5rem;
     align-self: stretch;
   }
 
+  .footer {
+    align-self: center;
+  }
   .sticky-line {
     position: absolute;
     top: 1471px;

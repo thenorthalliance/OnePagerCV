@@ -10,9 +10,9 @@
           <h3
           contenteditable="true"
           @blur="
-            updateProfile('descriptionTtile', ($event.target as HTMLElement)?.innerText)"
+            updateProfile('descriptionTitle', ($event.target as HTMLElement)?.innerText)"
           class="editable-text about-title"
-          >Om {{ profile?.firstname || "Navn" }}</h3>
+          >Om {{ profile?.name || "Navn" }}</h3>
           <img 
             src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
