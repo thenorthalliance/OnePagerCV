@@ -10,9 +10,9 @@
           <h3
           contenteditable="true"
           @blur="
-            updateProfile('descriptionTtile', ($event.target as HTMLElement)?.innerText)"
+            updateProfile('descriptionTitle', ($event.target as HTMLElement)?.innerText)"
           class="editable-text about-title"
-          >Om {{ profile?.firstname || "Navn" }}</h3>
+          >Om {{ profile?.name || "Navn" }}</h3>
           <img 
             src="./../../assets/icons/EditIcon.svg"
             alt="Edit icon"
@@ -82,7 +82,7 @@ const updateProfile = (field: string, value: any) => {
   .details-section {
     height: 100%;
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 0.7rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -92,7 +92,6 @@ const updateProfile = (field: string, value: any) => {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    gap: 1rem;
   }
   
   .details-row {
@@ -118,20 +117,20 @@ const updateProfile = (field: string, value: any) => {
   }
 
   .pin-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   p {
-    font-family: TiemposFineLight;
-    font-size: 2rem;
+    font-family: NoAAftenScreen;
+    font-size: 1.2rem;
     margin: 0;
   }
 
   span {
     color: var(--Black, #323231);
     font-family: NoAAftenScreen;
-    font-size: 1.5rem;
+    font-size: 0.8rem;
   }
 
 </style>

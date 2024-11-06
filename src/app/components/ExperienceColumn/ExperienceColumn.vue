@@ -20,7 +20,7 @@ import QualificationsSection from './QualificationsSection.vue';
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3rem 3rem 2rem 3rem;
+  padding: 2rem 2rem 1rem 2rem;
   flex: 1 0 0;
   align-self: stretch;
   align-items: flex-start;

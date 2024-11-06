@@ -23,7 +23,7 @@ import DetailsSection from "./DetailsSection.vue";
   align-items: flex-start;
   text-align: left;
   flex: 1 0 0;
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
 </style>

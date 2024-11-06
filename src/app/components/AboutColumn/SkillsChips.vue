@@ -26,9 +26,8 @@
             <div>
                 <p
                 :contenteditable="editingMode"
-                @blur="editingMode && updateProfile('skill', ($event.target as HTMLElement)?.innerText)"
+                @blur="editingMode && updateProfile('skills['+index+']', ($event.target as HTMLElement)?.innerText)"
                 :class="{ 'editable-text': editingMode }"
-                
                 >
                 {{ skill }}
                 </p>
@@ -65,14 +64,38 @@ import { ProfileToRender } from "../../types";
 // Injecting reactive profile object and update function
 const editingMode = ref(false); // To track if the user is in editing mode
 const hoveredIndex = ref(-1); // To track which item is being hovered
-console.log('hoveredIndex', hoveredIndex);
 const profile = inject<ProfileToRender>("profile");
 const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {
-    updateProfileField(field, value);
-  }
+    if (!profile) return;
+      if(field === 'skills') {
+        profile.skills = value;
+        return;
+      }
+      // Split the fieldPath by dots or array-like syntax (e.g., skills[1].projectName)
+      const pathArray = field.replace(/\[(\d+)\]/g, '.$1').split('.');
+
+      let currentLevel: any = profile;
+
+      for (let i = 0; i < pathArray.length - 1; i++) {
+        const key = pathArray[i];
+        if (!(key in currentLevel)) {
+          console.error(`Key ${key} not found in profile`);
+          return;
+        }
+        currentLevel = currentLevel[key];
+      }
+
+      const lastKey = pathArray[pathArray.length - 1];
+      currentLevel[lastKey] = value;
+
+      // Trigger reactivity by reassigning the updated array if needed
+      if (pathArray[0] === 'skills') {
+        profile.skills = [...profile?.skills || []];
+      }
+    }
 };
 
 // Hover event handler
@@ -82,9 +105,10 @@ function hoverEvent(index: number) {
 
 // Add skill handler
 function addSkill() {
-  if (profile?.skills) {
+    if (profile?.skills) {
     profile.skills.push('Ny ekspertise'); // Add an empty skill
   }
+
 }
 
 // Remove skill handler
@@ -101,7 +125,7 @@ function removeSkill(index: number) {
         color: var(--Crazy-Blue, #2a45ee);
     }
     .skills-section {
-        margin-top: 2rem;
+        margin-top: 1rem;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -110,6 +134,7 @@ function removeSkill(index: number) {
     }
 
     ul {
+        margin: 0.3rem 0;
         padding: 0;
         display: flex;
         flex-wrap: wrap;
@@ -119,26 +144,26 @@ function removeSkill(index: number) {
         gap: 0.7rem;
 
         li {
-            position: relative;
-            display: flex;
-            padding: 1rem 2rem;
-            border-radius: 40px;
-            justify-content: center;
-            border: 1.5px solid var(--Crazy-Blue, #2a45ee);
-            background: var(--White, #fff);
-            box-sizing: border-box;
             width: auto; 
             max-height: 3.6rem;
-            gap: 0.75rem;
+            position: relative;
+            display: flex;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            justify-content: center;
+            border: 1px solid var(--Crazy-Blue, #2a45ee);
+            background: var(--White, #fff);
+            box-sizing: border-box;
+            gap: 0.5rem;
         }
 
         p {
-        color: var(--Crazy-Blue, #2a45ee);
-        font-size: 1.4rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: 0.36px;
+            color: var(--Crazy-Blue, #2a45ee);
+            font-size: 0.6rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            letter-spacing: 0.36px;
         }
 
     }
@@ -147,14 +172,14 @@ function removeSkill(index: number) {
         position: absolute;
         top: -0.5rem; /* Adjust as needed */
         right: -0.5rem; /* Adjust as needed */
-        width: 2rem;
-        height: 2rem;
-        padding: 0 0 0.3rem 0.05rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        padding: 0 0 0.2rem 0;
         background-color: var(--Crazy-Blue, #2a45ee);;
         border: none;
         color: white;
         border-radius: 50%;
-        font-size: 2rem;
+        font-size: 1.2rem;
         text-align: center;
         cursor: pointer;
         display: flex;
@@ -164,14 +189,17 @@ function removeSkill(index: number) {
 
     .add-skill-button {
         border: 1.5px dashed var(--Ash, #645E57);
+        width: auto; 
+        height: 1.8rem;
 
         p {
             color: #645E57;
+            font-size: 0.7rem;
         }
     }
     .add-icon {
-        width: 1.3rem;
-        height: 1.3rem;
+        width: 0.7rem;
+        height: 0.7rem;
         justify-content: center;
     }
 </style>

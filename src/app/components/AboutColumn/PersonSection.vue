@@ -15,7 +15,7 @@
             @blur="updateProfile('name', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >
-            {{ (profile?.firstname || "Fornavn") + " " + (profile?.lastname || "Etternavn") }}
+            {{ (profile?.name || "Fornavn Etternavn") }}
             </h1>
             <h2
             contenteditable="true"

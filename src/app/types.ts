@@ -14,8 +14,7 @@
 
 // Initialy only for redering, but can now be editable. Renaming might be needed.
 export interface ProfileToRender {
-  firstname?: string;
-  lastname?: string;
+  name?: string;
   profilePicture?: { src: string; alt: string };
   birthYear?: number;
   placeOfResidence?: string;
