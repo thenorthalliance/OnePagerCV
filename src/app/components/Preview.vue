@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-header">
-      <h1 class="tool-name">CV1P</h1>
+      <h1 class="tool-name">1PCV</h1>
       <p class="header-text">Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen.</p>
       <!-- <button @click="exportToPDF">Print CV</button> -->
       <button @click="handlePrint">Export</button>
