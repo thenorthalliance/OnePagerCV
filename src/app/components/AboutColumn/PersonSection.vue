@@ -19,10 +19,10 @@
             </h1>
             <h2
             contenteditable="true"
-            @blur="updateProfile('title', ($event.target as HTMLElement)?.innerText)"
+            @blur="updateProfile('jobTitle', ($event.target as HTMLElement)?.innerText)"
             class="editable-text"
             >
-            {{ profile?.title || "Tittel" }}
+            {{ profile?.jobTitle || "Tittel" }}
             </h2>
         </div>
         <img 

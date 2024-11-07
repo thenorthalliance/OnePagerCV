@@ -17,8 +17,8 @@ export interface ProfileToRender {
   name?: string;
   profilePicture?: { src: string; alt: string };
   birthYear?: number;
-  placeOfResidence?: string;
-  title?: string;
+  residence?: string;
+  jobTitle?: string;
   skillsTitle?: string;
   skills?: string[];
   descriptionTitle?: string;
@@ -29,6 +29,10 @@ export interface ProfileToRender {
   qualifications?: LabelWithDetail[];
 }
 
+export interface ProfileCMS extends ProfileToRender {
+  _id: any;
+  _type: string;
+}
 
 interface ExperienceToRender {
   projectName: string;

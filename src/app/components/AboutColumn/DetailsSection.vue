@@ -51,11 +51,11 @@
           <span
             contenteditable="true"
             @blur="
-              updateProfile('placeOfResidence', ($event.target as HTMLElement)?.innerText)
+              updateProfile('residence', ($event.target as HTMLElement)?.innerText)
             "
             class="residence editable-text"
             >{{
-              profile?.placeOfResidence || "Bosted"
+              profile?.residence || "Bosted"
             }}
           </span>
         </div>

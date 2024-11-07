@@ -35,7 +35,7 @@
 import { reactive, provide, watch } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
-import { ProfileToRender } from '../types';
+import { ProfileCMS, ProfileToRender } from '../types';
 
 import { defineQuery } from "next-sanity";
 import  { client }  from  "../../sanity/client";
@@ -43,26 +43,12 @@ import  { client }  from  "../../sanity/client";
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
 
-// Function to trigger the print dialog
-const handlePrint = () => {
-  window.print()
-}
-
 const EMPLOYEES_QUERY = defineQuery(`*[
   _type == "employee"
-]
-// {
-//   firstname,
-//   lastname,
-//   image,
-//   birthYear,
-//   residence,
-//   jobTitle,
-//   skills,
-//   description,
-//   experience,
-//   qualifications
-// }
+] {
+  _id,
+  name,
+}
 `);
 
 
@@ -97,44 +83,12 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 //   window.removeEventListener("scroll", checkLineVisibility);
 // });
 
-// const dummyProfile = {
-//   firstname: 'Christian M',
-//   lastname: 'Sinding-Larsen',
-//   profilePicture: { src: 'https://via.placeholder.com/100', alt: 'Magnus Oma' },
-//   birthYear: 1990,
-//   placeOfResidence: 'Oslo',
-//   title: 'Team Lead Customer Experience & Advisor',
-//   skillsTitle: 'Ekspertise innen',
-//   skills: ['JavaScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js', 'TypeScript', 'Vue.js'],
-//   description: 'Ole er en av NoA Ignites mest erfarne UX-designere og han har lang erfaring med interaksjonsdesign, designsystem, konseptutvikling, prototyping, innsiktsarbeid og grafisk design. Han er kreativ, løsningsorientert og er en god lagspiller. I 2023 fikk han sammen med prosjektgruppen DOGA-merket for løsningen «Videosamtale med AMK».',
-//   experienceTitle: 'Utvalgt erfaring',
-//   experiences: [
-//     {
-//       projectName: 'Avonova Web',
-//       startDate: new Date('2022-09-01'),
-//       endDate: new Date('2024-04-01'),
-//       description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en ... Magnus tok ansvar for vedlikehold og videreutvikling av pipeline-ene i Azure DevOps, samt optimalisering av trafikkflyten med Azure Frontdoor. Som tech lead sikret han balansen mellom tekniske og forretningsmessige mål, og håndterte teknisk gjeld for å sikre langsiktig skalerbarhet.',
-//     }, {
-//       projectName: 'Avonova Web',
-//       startDate: new Date('2022-09-01'),
-//       endDate: new Date('2024-04-01'),
-//       description: 'Magnus har jobbet på flere prosjekter for Avonova, hvor han først bidro som utvikler og senere som tech lead. Prosjektene inkluderte fornyelse av Avonovas nettsider for å sikre en enhetlig identitet på tvers av land, samt en kursbookingsløsning som integrerte data fra flere systemer via et Next.js API.',
-//     },
-//   ],
-//   qualificationTitle: 'Utdanning, kurs og sertifiseringer',
-//   qualifications: [
-//     { label: 'Bachelor of Science', detail: 'Information Technology' },
-//     { label: 'Kurs', detail: 'Sanity certified developer' },
-//     { label: 'Kurs', detail: 'Fart og flyt, FINN' },
-//   ],
-// };
-
 const newProfile = reactive<ProfileToRender>({
   name: '',
   profilePicture: { src: '', alt: '' },
   birthYear: 0,
-  placeOfResidence: '',
-  title: '',
+  residence: '',
+  jobTitle: '',
   skillsTitle: 'Ekspertise innen',
   skills: [],
   descriptionTitle: 'Om Navn',
@@ -187,37 +141,44 @@ watch(profile, () => {
 }, { deep: true });
 
 
-// Send profile to Sanity
-const profileToSanity = {
-  _type: 'employee',
-  _id: 'f6f84924-8f66-48f9-aa88-0b4cec377825',
-  firstname: profile?.name,
-  // image: {
-  //   _type: 'image',
-  //   asset: {
-  //     _ref: profile?.profilePicture?.src,
-  //     _type: 'reference',
-  //   },
-  // },
-  birthYear: profile?.birthYear,
-  residence: profile?.placeOfResidence,
-  jobTitle: profile?.title,
-  skills: profile?.skills,
-  description: profile?.description,
-  experience: profile?.experiences,
-  qualifications: profile?.qualifications,
-};
+// Function to trigger the print dialog
+const handlePrint = () => {
 
-// console.log('Profile: ', JSON.stringify(profile, null, 2));
+  client.fetch(EMPLOYEES_QUERY).then((data) => {
+    console.log('data', data);
 
-client.createOrReplace(profileToSanity).then((res) => {
-  // console.log('Profile: ', profileToSanity);
-  console.log('Profile sent to Sanity:', res);
-});
+    for (const employee of data) {
+      if (employee.name === profile.name) {
+        console.log('Employee already exists in Sanity', employee._id);
+        const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
+        
+        console.log('Profile to update:', profileToSanity);
+        // Send profile to Sanity
+        client.createOrReplace(profileToSanity).then((res) => {
+          console.log('Profile sent to Sanity:', res);
+        });
+        return;
 
-client.fetch(EMPLOYEES_QUERY).then((data) => {
-  console.log('data', data);
-});
+      } else {
+        console.log('Employee does not exist in Sanity');
+        const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
+        console.log('Profile to create:', profileToSanity);
+        client.create(profileToSanity).then((res) => {
+          console.log('Profile sent to Sanity:', res);
+        });
+
+        return;
+      }
+    }
+  
+      
+    
+  });
+  
+  
+  // window.print()
+}
+
 
 </script>
 
