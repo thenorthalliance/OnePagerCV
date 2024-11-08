@@ -176,7 +176,7 @@ const handlePrint = () => {
   });
   
   
-  // window.print()
+  window.print()
 }
 
 
