@@ -2,9 +2,28 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">1PCV</h1>
-      <p class="header-text">Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen.</p>
-      <!-- <button @click="exportToPDF">Print CV</button> -->
-      <button @click="handlePrint">Export</button>
+      <div>
+        <div v-if="hasWarnings">
+          <HeaderWarning ref="warnings"/>
+        </div>
+        <div v-else >
+          <p class="header-text">
+            Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner
+            (når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på 
+            Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen. 
+          </p><p class="strong">NB! Fyll ut alle felt for å eksportere pdf-en.</p>
+        </div>
+      </div>
+      <div class="format-selector">
+        <FormatDropdown />
+        <button 
+          @click="handlePrint" 
+          class="export-btn" 
+          :disabled="hasWarnings" 
+        >
+          Export
+        </button>
+      </div>
     </div>
 
     <!-- Content to be printet -->
@@ -32,9 +51,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, provide, watch } from 'vue';
+import { reactive, provide, watch, inject, ref, onMounted } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
+import FormatDropdown from './FormatDropdown.vue';
+import HeaderWarning from './HeaderWarning.vue';
 import { ProfileCMS, ProfileToRender } from '../types';
 
 import { defineQuery } from "next-sanity";
@@ -42,6 +63,9 @@ import  { client }  from  "../../sanity/client";
 // import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
+
+
+const toogleWriteToSanity = false;
 
 const EMPLOYEES_QUERY = defineQuery(`*[
   _type == "employee"
@@ -83,7 +107,7 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 //   window.removeEventListener("scroll", checkLineVisibility);
 // });
 
-const newProfile = reactive<ProfileToRender>({
+let newProfile = reactive<ProfileToRender>({
   name: '',
   profilePicture: { src: '', alt: '' },
   birthYear: 0,
@@ -140,45 +164,62 @@ watch(profile, () => {
   console.log('Profile updated:', profile);
 }, { deep: true });
 
+const warnings = ref<{warningsArray:boolean} | null>(null);
+const hasWarnings = ref<boolean | undefined>(undefined);
+onMounted(() => {
+  if (warnings.value) {
+    hasWarnings.value = warnings.value.warningsArray;
+  }
+
+});
 
 // Function to trigger the print dialog
 const handlePrint = () => {
 
-  client.fetch(EMPLOYEES_QUERY).then((data) => {
-    console.log('data', data);
+  console.log('Parent warnings:', hasWarnings);
 
-    for (const employee of data) {
-      if (employee.name === profile.name) {
-        console.log('Employee already exists in Sanity', employee._id);
-        const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
-        
-        console.log('Profile to update:', profileToSanity);
-        // Send profile to Sanity
-        client.createOrReplace(profileToSanity).then((res) => {
-          console.log('Profile sent to Sanity:', res);
-        });
-        return;
+  if(hasWarnings.value) {
 
-      } else {
-        console.log('Employee does not exist in Sanity');
-        const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
-        console.log('Profile to create:', profileToSanity);
-        client.create(profileToSanity).then((res) => {
-          console.log('Profile sent to Sanity:', res);
-        });
+  } else {
+    // Check if employee already exists in Sanity
+    client.fetch(EMPLOYEES_QUERY).then((data) => {
+      console.log('data', data);
+      for (const employee of data) {
+        if (employee.name === profile.name) {
+          console.log('Employee already exists in Sanity', employee._id);
+          const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
+          
+          console.log('Profile to update:', profileToSanity);
+          if(toogleWriteToSanity)
+          {
+            // Send profile to Sanity
+            client.createOrReplace(profileToSanity).then((res) => {
+              console.log('Profile sent to Sanity:', res);
+            });
+          }
+          return;
 
-        return;
+        } else {
+          console.log('Employee does not exist in Sanity');
+          const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
+          console.log('Profile to create:', profileToSanity);
+          if(toogleWriteToSanity)
+          {
+            client.create(profileToSanity).then((res) => {
+              console.log('Profile sent to Sanity:', res);
+            });
+          }
+          return;
+        }
       }
-    }
-  
-      
     
-  });
+        
+      
+    });
+  window.print()
+  }
   
-  
-  // window.print()
 }
-
 
 </script>
 
@@ -235,13 +276,14 @@ const handlePrint = () => {
     background: var(--White, #FFF);
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
     overflow: auto;
+    margin-bottom: 5rem;
   }
 
   .page-header {
     display: flex;
     justify-content: space-between;
-    width: 80vw;
-    padding: 0.5rem;
+    width: 1300px;
+    padding: 1.5rem 0;
     gap: 1rem;
   }
 
@@ -259,6 +301,13 @@ const handlePrint = () => {
     align-self: flex-start;
     color: white;
     font-size: 1rem;
+    margin: 0 2rem;
+  }
+
+  .strong {
+    font-family: NoAAftenScreenBold;
+    font-size: 1rem;
+    color: #fff;
   }
 
   .header {
@@ -277,6 +326,32 @@ const handlePrint = () => {
 
   .footer {
     align-self: center;
+  }
+
+  .export-btn {
+    height: 2.5rem;
+    background-color: #FFF;
+    align-self: flex-end;
+    color: #303030;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .export-btn:disabled {
+    background-color: #868686;
+    color: #464646;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-color: #464646;
+    cursor: not-allowed;
+  }
+
+  .format-selector {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 0.2rem;
   }
   .sticky-line {
     position: absolute;
