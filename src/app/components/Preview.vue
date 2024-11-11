@@ -38,7 +38,7 @@
         <ExperienceColumn />
       </div>
 
-      <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
+      <!-- This could be it's own component -->
       <div class="footer">
         <p>www.noaignite.com</p>
       </div>
@@ -46,12 +46,10 @@
     </div>
   </div>
 
-  <!-- <div :class="{ 'sticky-line': true, 'hidden-line': hideLine }"></div> -->
-  <!-- <div class="sticky-line"></div> -->
 </template>
 
 <script setup lang="ts">
-import { reactive, provide, watch, inject, ref, onMounted } from 'vue';
+import { reactive, provide, watch, ref } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import FormatDropdown from './FormatDropdown.vue';
@@ -68,6 +66,11 @@ import { requiredFields } from '../helpers';
 
 const toogleWriteToSanity = false;
 
+// Initialize `hasWarnings` as undefined
+const hasWarnings = ref<boolean | undefined>(undefined);
+const warningsList = ref<string[]>([]); // Track missing fields in real-time
+
+
 const EMPLOYEES_QUERY = defineQuery(`*[
   _type == "employee"
 ] {
@@ -83,30 +86,6 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 //     ? imageUrlBuilder({ projectId, dataset }).image(source)
 //     : null; 
 
-    
-//TODO: make red-dotted line disapear when height is reached 
-// import { ref, onMounted, onUnmounted } from "vue";
-
-// const hideLine = ref(false);
-// const cvPreview = ref<HTMLElement | null>(null);
-
-// function checkLineVisibility() {
-//   if (cvPreview.value) {
-//     const rect = cvPreview.value.getBoundingClientRect();
-//     // Set height threshold where the line should disappear, adjust 200 to desired value
-//     hideLine.value = rect.top < 1570;
-//   }
-// }
-
-// // Listen to scroll events
-// onMounted(() => {
-//   window.addEventListener("scroll", checkLineVisibility);
-//   checkLineVisibility(); // Initial check
-// });
-
-// onUnmounted(() => {
-//   window.removeEventListener("scroll", checkLineVisibility);
-// });
 
 let newProfile = reactive<ProfileToRender>({
   name: '',
@@ -165,10 +144,7 @@ watch(profile, () => {
   console.log('Profile updated:', profile);
 }, { deep: true });
 
-// Initialize `hasWarnings` as undefined
-const hasWarnings = ref<boolean | undefined>(undefined);
-const warningsList = ref<string[]>([]); // Track missing fields in real-time
-console.log('hasWarnings:', hasWarnings.value);
+
 // Watch `profile` to update `hasWarnings` based on required fields
 watch(profile, () => {
     warningsList.value = requiredFields(profile);
@@ -184,15 +160,14 @@ const handlePrint = () => {
   if (warningsList.value.length > 0) {
     hasWarnings.value = true; // Enable warnings to display the list of missing fields
   } else {
+
     // Check if employee already exists in Sanity
     client.fetch(EMPLOYEES_QUERY).then((data) => {
-      console.log('data', data);
       for (const employee of data) {
         if (employee.name === profile.name) {
-          console.log('Employee already exists in Sanity', employee._id);
+          // console.log('Employee already exists in Sanity', employee._id);
           const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
-          
-          console.log('Profile to update:', profileToSanity);
+
           if(toogleWriteToSanity)
           {
             // Send profile to Sanity
@@ -205,7 +180,7 @@ const handlePrint = () => {
         } else {
           console.log('Employee does not exist in Sanity');
           const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
-          console.log('Profile to create:', profileToSanity);
+
           if(toogleWriteToSanity)
           {
             client.create(profileToSanity).then((res) => {
@@ -251,7 +226,6 @@ const handlePrint = () => {
 
   #layout {
     width: 100%;
-    /* height: 100%; */
     position: absolute;
     left: 0;
     top: 0;
@@ -270,7 +244,7 @@ const handlePrint = () => {
     width: 100%;
     height: 780px;
     aspect-ratio: 16 / 9;
-    padding: 0.8rem 1.5rem; /*TODO: sjekk tall med figma*/
+    padding: 0.8rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
