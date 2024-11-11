@@ -3,8 +3,8 @@
     <div class="page-header">
       <h1 class="tool-name">1PCV</h1>
       <div>
-        <div v-if="hasWarnings">
-          <HeaderWarning ref="warnings"/>
+        <div v-if="hasWarnings && warningsList.length > 0">
+          <HeaderWarning :warnings="warningsList"/>
         </div>
         <div v-else >
           <p class="header-text">
@@ -19,7 +19,7 @@
         <button 
           @click="handlePrint" 
           class="export-btn" 
-          :disabled="hasWarnings" 
+          :disabled="warningsList.length > 0 && hasWarnings" 
         >
           Export
         </button>
@@ -60,6 +60,7 @@ import { ProfileCMS, ProfileToRender } from '../types';
 
 import { defineQuery } from "next-sanity";
 import  { client }  from  "../../sanity/client";
+import { requiredFields } from '../helpers';
 // import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
@@ -164,22 +165,24 @@ watch(profile, () => {
   console.log('Profile updated:', profile);
 }, { deep: true });
 
-const warnings = ref<{warningsArray:boolean} | null>(null);
+// Initialize `hasWarnings` as undefined
 const hasWarnings = ref<boolean | undefined>(undefined);
-onMounted(() => {
-  if (warnings.value) {
-    hasWarnings.value = warnings.value.warningsArray;
-  }
-
-});
+const warningsList = ref<string[]>([]); // Track missing fields in real-time
+console.log('hasWarnings:', hasWarnings.value);
+// Watch `profile` to update `hasWarnings` based on required fields
+watch(profile, () => {
+    warningsList.value = requiredFields(profile);
+    hasWarnings.value = warningsList.value.length > 0 ? true : false;
+    console.log('Warnings:', hasWarnings.value);
+  },
+  { deep: true } // Watch deeply to react to changes in nested properties
+);
 
 // Function to trigger the print dialog
 const handlePrint = () => {
-
-  console.log('Parent warnings:', hasWarnings);
-
-  if(hasWarnings.value) {
-
+  warningsList.value = requiredFields(profile); // Refresh warnings on button click
+  if (warningsList.value.length > 0) {
+    hasWarnings.value = true; // Enable warnings to display the list of missing fields
   } else {
     // Check if employee already exists in Sanity
     client.fetch(EMPLOYEES_QUERY).then((data) => {
@@ -216,7 +219,7 @@ const handlePrint = () => {
         
       
     });
-  window.print()
+    window.print()
   }
   
 }
