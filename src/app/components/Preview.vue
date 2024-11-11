@@ -2,13 +2,28 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">1PCV</h1>
-      <p class="header-text">
-        Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" 
-        på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) 
-        så er det for mye tekst i OnePageren. Etter at du trykker på 
-        Export-knappen må du velge at Paper size til "Legal". Deretter tilpasse
-        pdf-en slik at den passer til powerpoint-sliden.</p>
-      <button @click="handlePrint">Export</button>
+      <div>
+        <div v-if="hasWarnings && warningsList.length > 0">
+          <HeaderWarning :warnings="warningsList"/>
+        </div>
+        <div v-else >
+          <p class="header-text">
+            Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner
+            (når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på 
+            Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen. 
+          </p><p class="strong">NB! Fyll ut alle felt for å eksportere pdf-en.</p>
+        </div>
+      </div>
+      <div class="format-selector">
+        <FormatDropdown />
+        <button 
+          @click="handlePrint" 
+          class="export-btn" 
+          :disabled="warningsList.length > 0 && hasWarnings" 
+        >
+          Export
+        </button>
+      </div>
     </div>
 
     <!-- Content to be printet -->
@@ -23,7 +38,7 @@
         <ExperienceColumn />
       </div>
 
-      <!-- Dette kan sikkert også bli en komponent, mangler sidetall nå -->
+      <!-- This could be it's own component -->
       <div class="footer">
         <p>www.noaignite.com</p>
       </div>
@@ -31,21 +46,30 @@
     </div>
   </div>
 
-  <!-- <div :class="{ 'sticky-line': true, 'hidden-line': hideLine }"></div> -->
-  <!-- <div class="sticky-line"></div> -->
 </template>
 
 <script setup lang="ts">
-import { reactive, provide, watch } from 'vue';
+import { reactive, provide, watch, ref } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
+import FormatDropdown from './FormatDropdown.vue';
+import HeaderWarning from './HeaderWarning.vue';
 import { ProfileCMS, ProfileToRender } from '../types';
 
 import { defineQuery } from "next-sanity";
 import  { client }  from  "../../sanity/client";
+import { requiredFields } from '../helpers';
 // import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
+
+
+const toogleWriteToSanity = false;
+
+// Initialize `hasWarnings` as undefined
+const hasWarnings = ref<boolean | undefined>(undefined);
+const warningsList = ref<string[]>([]); // Track missing fields in real-time
+
 
 const EMPLOYEES_QUERY = defineQuery(`*[
   _type == "employee"
@@ -62,32 +86,8 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 //     ? imageUrlBuilder({ projectId, dataset }).image(source)
 //     : null; 
 
-    
-//TODO: make red-dotted line disapear when height is reached 
-// import { ref, onMounted, onUnmounted } from "vue";
 
-// const hideLine = ref(false);
-// const cvPreview = ref<HTMLElement | null>(null);
-
-// function checkLineVisibility() {
-//   if (cvPreview.value) {
-//     const rect = cvPreview.value.getBoundingClientRect();
-//     // Set height threshold where the line should disappear, adjust 200 to desired value
-//     hideLine.value = rect.top < 1570;
-//   }
-// }
-
-// // Listen to scroll events
-// onMounted(() => {
-//   window.addEventListener("scroll", checkLineVisibility);
-//   checkLineVisibility(); // Initial check
-// });
-
-// onUnmounted(() => {
-//   window.removeEventListener("scroll", checkLineVisibility);
-// });
-
-const newProfile = reactive<ProfileToRender>({
+let newProfile = reactive<ProfileToRender>({
   name: '',
   profilePicture: { src: '', alt: '' },
   birthYear: 0,
@@ -145,44 +145,59 @@ watch(profile, () => {
 }, { deep: true });
 
 
+// Watch `profile` to update `hasWarnings` based on required fields
+watch(profile, () => {
+    warningsList.value = requiredFields(profile);
+    hasWarnings.value = warningsList.value.length > 0 ? true : false;
+    console.log('Warnings:', hasWarnings.value);
+  },
+  { deep: true } // Watch deeply to react to changes in nested properties
+);
+
 // Function to trigger the print dialog
 const handlePrint = () => {
+  warningsList.value = requiredFields(profile); // Refresh warnings on button click
+  if (warningsList.value.length > 0) {
+    hasWarnings.value = true; // Enable warnings to display the list of missing fields
+  } else {
 
-  client.fetch(EMPLOYEES_QUERY).then((data) => {
-    console.log('data', data);
+    // Check if employee already exists in Sanity
+    client.fetch(EMPLOYEES_QUERY).then((data) => {
+      for (const employee of data) {
+        if (employee.name === profile.name) {
+          // console.log('Employee already exists in Sanity', employee._id);
+          const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
 
-    for (const employee of data) {
-      if (employee.name === profile.name) {
-        console.log('Employee already exists in Sanity', employee._id);
-        const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
-        
-        console.log('Profile to update:', profileToSanity);
-        // Send profile to Sanity
-        client.createOrReplace(profileToSanity).then((res) => {
-          console.log('Profile sent to Sanity:', res);
-        });
-        return;
+          if(toogleWriteToSanity)
+          {
+            // Send profile to Sanity
+            client.createOrReplace(profileToSanity).then((res) => {
+              console.log('Profile sent to Sanity:', res);
+            });
+          }
+          return;
 
-      } else {
-        console.log('Employee does not exist in Sanity');
-        const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
-        console.log('Profile to create:', profileToSanity);
-        client.create(profileToSanity).then((res) => {
-          console.log('Profile sent to Sanity:', res);
-        });
+        } else {
+          console.log('Employee does not exist in Sanity');
+          const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
 
-        return;
+          if(toogleWriteToSanity)
+          {
+            client.create(profileToSanity).then((res) => {
+              console.log('Profile sent to Sanity:', res);
+            });
+          }
+          return;
+        }
       }
-    }
-  
-      
     
-  });
-  
-  
-  window.print()
+        
+      
+    });
+    window.print()
+  }
+ 
 }
-
 
 </script>
 
@@ -211,7 +226,6 @@ const handlePrint = () => {
 
   #layout {
     width: 100%;
-    /* height: 100%; */
     position: absolute;
     left: 0;
     top: 0;
@@ -230,7 +244,7 @@ const handlePrint = () => {
     width: 100%;
     height: 816px;
     aspect-ratio: 16 / 9;
-    padding: 0.7rem 0.1rem; /*TODO: sjekk tall med figma*/
+    padding: 0.8rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -239,13 +253,14 @@ const handlePrint = () => {
     background: var(--White, #FFF);
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.25);
     overflow: auto;
+    margin-bottom: 5rem;
   }
 
   .page-header {
     display: flex;
     justify-content: space-between;
-    width: 80vw;
-    padding: 0.5rem;
+    width: 1300px;
+    padding: 1.5rem 0;
     gap: 1rem;
   }
 
@@ -263,6 +278,13 @@ const handlePrint = () => {
     align-self: flex-start;
     color: white;
     font-size: 1rem;
+    margin: 0 2rem;
+  }
+
+  .strong {
+    font-family: NoAAftenScreenBold;
+    font-size: 1rem;
+    color: #fff;
   }
 
   .header {
@@ -281,6 +303,32 @@ const handlePrint = () => {
 
   .footer {
     align-self: center;
+  }
+
+  .export-btn {
+    height: 2.5rem;
+    background-color: #FFF;
+    align-self: flex-end;
+    color: #303030;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .export-btn:disabled {
+    background-color: #868686;
+    color: #464646;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-color: #464646;
+    cursor: not-allowed;
+  }
+
+  .format-selector {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 0.2rem;
   }
   .sticky-line {
     position: absolute;
