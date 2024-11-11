@@ -2,8 +2,12 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">1PCV</h1>
-      <p class="header-text">Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen.</p>
-      <!-- <button @click="exportToPDF">Print CV</button> -->
+      <p class="header-text">
+        Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" 
+        på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) 
+        så er det for mye tekst i OnePageren. Etter at du trykker på 
+        Export-knappen må du velge at Paper size til "Legal". Deretter tilpasse
+        pdf-en slik at den passer til powerpoint-sliden.</p>
       <button @click="handlePrint">Export</button>
     </div>
 
@@ -189,8 +193,8 @@ const handlePrint = () => {
 
   @page {
     margin: 0;
-    /* size: a3;
-    orientation: landscape; */
+    /* size: legal; */
+    /* orientation: landscape; */
   }
 
   #app {
@@ -222,11 +226,11 @@ const handlePrint = () => {
 }
 
 #layout {
-    max-width: 1300px;
+    max-width: 1344px;
     width: 100%;
-    height: 780px;
+    height: 816px;
     aspect-ratio: 16 / 9;
-    padding: 0.8rem 1.5rem; /*TODO: sjekk tall med figma*/
+    padding: 0.7rem 0.1rem; /*TODO: sjekk tall med figma*/
     display: flex;
     flex-direction: column;
     justify-content: space-between;
