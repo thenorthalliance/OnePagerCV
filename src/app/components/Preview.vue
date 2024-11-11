@@ -196,7 +196,7 @@ const handlePrint = () => {
     });
     window.print()
   }
-  
+ 
 }
 
 </script>
@@ -208,8 +208,8 @@ const handlePrint = () => {
 
   @page {
     margin: 0;
-    /* size: a3;
-    orientation: landscape; */
+    /* size: legal; */
+    /* orientation: landscape; */
   }
 
   #app {
@@ -240,9 +240,9 @@ const handlePrint = () => {
 }
 
 #layout {
-    max-width: 1300px;
+    max-width: 1344px;
     width: 100%;
-    height: 780px;
+    height: 816px;
     aspect-ratio: 16 / 9;
     padding: 0.8rem 1.5rem;
     display: flex;
