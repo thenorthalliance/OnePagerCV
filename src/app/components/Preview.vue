@@ -8,14 +8,16 @@
         </div>
         <div v-else >
           <p class="header-text">
-            Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner
-            (når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på 
-            Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen. 
+            Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" 
+            på bunnen av siden forsvinner(når du må skrolle for å se url-adressa) 
+            så er det for mye tekst i OnePageren. Etter at du trykker på 
+            Export-knappen må du velge at Paper size til "Legal". Deretter tilpasse
+            pdf-en slik at den passer til powerpoint-sliden. 
           </p><p class="strong">NB! Fyll ut alle felt for å eksportere pdf-en.</p>
         </div>
       </div>
       <div class="format-selector">
-        <FormatDropdown />
+        <!-- <FormatDropdown /> -->
         <button 
           @click="handlePrint" 
           class="export-btn" 
@@ -55,10 +57,10 @@ import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
 import FormatDropdown from './FormatDropdown.vue';
 import HeaderWarning from './HeaderWarning.vue';
 import { ProfileCMS, ProfileToRender } from '../types';
-
 import { defineQuery } from "next-sanity";
-import  { client }  from  "../../sanity/client";
+import { client }  from  "../../sanity/client";
 import { requiredFields } from '../helpers';
+import { OnePagerCvPpt } from '../OnePagerCvPpt';
 // import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
@@ -123,7 +125,6 @@ let newProfile = reactive<ProfileToRender>({
   qualifications: [
     { label: '', detail: '' },
     { label: '', detail: '' },
-    { label: '', detail: '' },
   ],
 });
 
@@ -156,10 +157,10 @@ watch(profile, () => {
 
 // Function to trigger the print dialog
 const handlePrint = () => {
-  warningsList.value = requiredFields(profile); // Refresh warnings on button click
-  if (warningsList.value.length > 0) {
-    hasWarnings.value = true; // Enable warnings to display the list of missing fields
-  } else {
+  // warningsList.value = requiredFields(profile); // Refresh warnings on button click
+  // if (warningsList.value.length > 0) {
+  //   hasWarnings.value = true; // Enable warnings to display the list of missing fields
+  // } else {
 
     // Check if employee already exists in Sanity
     client.fetch(EMPLOYEES_QUERY).then((data) => {
@@ -194,8 +195,9 @@ const handlePrint = () => {
         
       
     });
-    window.print()
-  }
+    // window.print()
+    OnePagerCvPpt(profile);
+  // } //end of else to check if there are warnings
  
 }
 
@@ -244,7 +246,7 @@ const handlePrint = () => {
     width: 100%;
     height: 816px;
     aspect-ratio: 16 / 9;
-    padding: 0.8rem 1.5rem;
+    padding: 0.7rem 0.1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
