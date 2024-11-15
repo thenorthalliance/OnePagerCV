@@ -169,7 +169,7 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
 
 function fileName (profile: ProfileToRender): string {
     let {name} = profile;
-    return name?.replace(/\s+/g, '') || 'NoaIgniteKonsulentprofil';
+    return name?.replace(/\s+/g, '') || 'NoaIgniteKonsulentprofil'; //regex to remove whitespaces
 }
 
 function SkillsChips(pptx: PptxGen, slide: PptxGen.Slide, profile: ProfileToRender) {
