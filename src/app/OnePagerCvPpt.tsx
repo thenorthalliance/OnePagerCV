@@ -84,8 +84,6 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
         fontFace: "NoAAftenScreen",
         align: "left",
         valign: "top",
-        // rectRadius: 2,
-        // line: {color: '2A45EE', width: 0.5},
     });
     
     slide.addText(`f. ${profile.birthYear}` || "f. ÅÅÅÅ", {
@@ -166,9 +164,13 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
     });
 
     //exporting the slide
-    pptx.writeFile({ fileName: "Sample Presentation" }).then((fileName) => console.log(`writeFile: ${fileName}`));
+    pptx.writeFile({ fileName: `${fileName(profile)}_OnePagerCV` }).then((fileName) => console.log(`writeFile: ${fileName}`));
 }
 
+function fileName (profile: ProfileToRender): string {
+    let {name} = profile;
+    return name?.replace(/\s+/g, '') || 'NoaIgniteKonsulentprofil';
+}
 
 function SkillsChips(pptx: PptxGen, slide: PptxGen.Slide, profile: ProfileToRender) {
     const skills = profile?.skills;
@@ -181,7 +183,6 @@ function SkillsChips(pptx: PptxGen, slide: PptxGen.Slide, profile: ProfileToRend
         let skillLength = getWidthOfChip(skill.length);
         // an array of skills
         skillsLenght.push(skillLength);
-        // the x point of the skills
         
         slide.addShape(pptx.ShapeType.roundRect, {
             x: `${2 + skillsXpoint}%`,
@@ -190,9 +191,8 @@ function SkillsChips(pptx: PptxGen, slide: PptxGen.Slide, profile: ProfileToRend
             h: '5%',
             rectRadius: 2,
             line: {color: '2A45EE', width: 0.5},
-            // lineSize: 1,
         });
-        slide.addText(skill || 'Skill', {
+        slide.addText(skill || 'Ny ekspertise', {
             x: `${2.2 + skillsXpoint}%`,
             y: `${33.4 + row * 6}%`,
             w: `${skillLength}%`,
@@ -204,7 +204,6 @@ function SkillsChips(pptx: PptxGen, slide: PptxGen.Slide, profile: ProfileToRend
         skillsXpoint += skillLength +0.5;
 
         if (skillsXpoint + skillLength > 42) {
-            // console.log('last on row', skillsXpoint + skillLength);
             row++;
             skillsXpoint = 0;
         }
@@ -240,7 +239,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
     const result = experiences?.map((experience, index) => {
         ypoint = getDescriptionYpoint(experiences, index);
 
-        slide.addText(experience.startDate || '12.66', {
+        slide.addText(experience.startDate || '01.01', {
             x: '46%',
             y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
             w: '5%',
@@ -260,7 +259,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
             fontFace: "NoAAftenScreenBold"
         });
 
-        slide.addText(experience.endDate || '12.77', {
+        slide.addText(experience.endDate || '01.01', {
             x: '49.5%',
             y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
             w: '5%',
@@ -280,7 +279,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
             fontFace: "NoAAftenScreenBold"
         });
         
-        slide.addText(experience.projectName || 'Prosjektnavn', {
+        slide.addText(experience.projectName || 'Prosjektnavn, Kunde', {
             x: '53%',
             y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
             w: '40%',
@@ -291,7 +290,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
             // charSpacing: 1.05,
         });
 
-        slide.addText(experience.description || 'Beskrivelse', {
+        slide.addText(experience.description || 'Legg til tekst', {
             x: '46%',
             y: `${ypoint[1]}%`, // Last number decides the distance between the experiences
             w: '50%',
@@ -337,7 +336,7 @@ function qualifications(slide: PptxGen.Slide, profile: ProfileToRender) {
 
     const result = qualifications?.map((qualification, index) => {
         //  In sanity; choose between "Kurs", "Utdanning" and "Sertifisering"
-        slide.addText(qualification.label || 'Tittel:', {
+        slide.addText(qualification.label || 'Kurs:', {
             x: '46%',
             y: `${67 + index * 4}%`,
             w: '9%',
@@ -348,7 +347,7 @@ function qualifications(slide: PptxGen.Slide, profile: ProfileToRender) {
         });
 
         // TODO: max word/charachters
-        slide.addText(qualification.detail || 'Beskrivelse', {
+        slide.addText(qualification.detail || 'Beskrivelse, sted og/eller år', {
             x: `${getDetailXpoint(qualification.label)}%`, // if qualification.label is longer than 6 letters then the needs to be adjusted
             y: `${67 + index * 4}%`,
             w: '45%',
@@ -356,7 +355,7 @@ function qualifications(slide: PptxGen.Slide, profile: ProfileToRender) {
             fontSize: 8,
             color: "000000",
             fontFace: "NoAAftenScreen",
-            charSpacing: 1.2,
+            charSpacing: 0.9,
             align: "left",
         });
     });
