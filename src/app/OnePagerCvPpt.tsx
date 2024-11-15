@@ -1,7 +1,7 @@
 import type { ExperienceToRender, ProfileToRender } from "./types";
 import PptxGen from "pptxgenjs";
 import profileImg from './assets/profileImg.png';
-import pinIcon from './assets/icons/pinIcon.svg';
+// import pinIcon from './assets/icons/pinIcon.svg';
 
 export function OnePagerCvPpt(profile: ProfileToRender) {
     let pptx = new PptxGen();
@@ -97,7 +97,7 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
     });
 
     slide.addImage({
-        path: pinIcon, 
+        path: "public/assets/icons/pinIcon.svg", 
         x: '9.1%',
         y: '87.8%',
         w: '1.3%',
@@ -316,9 +316,9 @@ function getDescriptionYpoint(experiences: ExperienceToRender[], index: number):
     if (experiencesLength === 1) return [17, 19];
     if (experiencesLength === 2) { // TODO: needs to be adjusted
         console.log('descriptionLength 2 elements:',index, descriptionLength);
-        if (descriptionLength <= 290) return [17 + index * 10, 19 + index * 10];
+        if (descriptionLength <= 290) return [17 + index * 12, 19 + index * 12];
         if (descriptionLength > 290 && descriptionLength <= 360) return [17 + index * 14, 19 + index * 14];
-        if (descriptionLength > 360) return [17 + index * 18, 19 + index * 18];
+        if (descriptionLength > 360) return [17 + index * 15, 19 + index * 15];
     }
     if (experiencesLength === 3) { //most common
         if (descriptionLength > 120 && descriptionLength <= 250) return [17 + index * 12, 19 + index * 12];
