@@ -141,14 +141,14 @@ function removeSkill(index: number) {
         align-items: flex-start;
         align-content: flex-start;
         align-self: stretch;
-        gap: 0.7rem;
+        gap: 0.3rem;
 
         li {
             width: auto; 
             max-height: 3.6rem;
             position: relative;
             display: flex;
-            padding: 0.5rem 1rem;
+            padding: 0.7rem 1rem;
             border-radius: 40px;
             justify-content: center;
             border: 1px solid var(--Crazy-Blue, #2a45ee);
@@ -190,7 +190,7 @@ function removeSkill(index: number) {
     .add-skill-button {
         border: 1.5px dashed var(--Ash, #645E57);
         width: auto; 
-        height: 1.8rem;
+        height: 2.3rem;
 
         p {
             color: #645E57;

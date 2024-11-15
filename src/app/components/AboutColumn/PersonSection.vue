@@ -12,14 +12,18 @@
         
             <h1
             contenteditable="true"
-            @blur="updateProfile('name', ($event.target as HTMLElement)?.innerText)"
+            ref="nameField"
+            @keypress="clearDefaultText('name')"
+            @blur="updateAndRestoreDefaultText('name', $event)"
             class="editable-text"
             >
             {{ (profile?.name || "Fornavn Etternavn") }}
             </h1>
             <h2
             contenteditable="true"
-            @blur="updateProfile('jobTitle', ($event.target as HTMLElement)?.innerText)"
+            ref="jobTitleField"
+            @keypress="clearDefaultText('jobTitle')"
+            @blur="updateAndRestoreDefaultText('jobTitle', $event)"
             class="editable-text"
             >
             {{ profile?.jobTitle || "Tittel" }}
@@ -46,6 +50,39 @@ const updateProfile = (field: string, value: any) => {
     updateProfileField(field, value);
   }
 };
+
+// Refs for the editable fields
+const nameField = ref<HTMLElement | null>(null);
+const jobTitleField = ref<HTMLElement | null>(null);
+
+// Clear default text on focus if it's still set
+const clearDefaultText = (field: string) => {
+  const element = field === 'name' ? nameField.value : jobTitleField.value;
+  if (element) {
+    const defaultValue = field === 'name' ? 'Fornavn Etternavn' : 'Tittel';
+    if (element.innerText === defaultValue) {
+      element.innerText = ''; // Clear the default text
+    }
+  }
+};
+
+const updateAndRestoreDefaultText = (field: string, event: Event) => {
+  const element = event.target as HTMLElement;
+  const newValue = element.innerText.trim();
+
+  // Update the profile
+  if (newValue) {
+    updateProfile(field, newValue);
+  } else {
+    // Restore default text if the field is empty
+    if (field === 'name') {
+      element.innerText = 'Fornavn Etternavn';
+    } else if (field === 'jobTitle') {
+      element.innerText = 'Tittel';
+    }
+  }
+};
+
 </script>
 
 <style scoped>

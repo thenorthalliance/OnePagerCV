@@ -150,7 +150,7 @@ watch(profile, () => {
 watch(profile, () => {
     warningsList.value = requiredFields(profile);
     hasWarnings.value = warningsList.value.length > 0 ? true : false;
-    console.log('Warnings:', hasWarnings.value);
+    // console.log('Warnings:', hasWarnings.value);
   },
   { deep: true } // Watch deeply to react to changes in nested properties
 );
@@ -242,11 +242,11 @@ const handlePrint = () => {
 }
 
 #layout {
-    max-width: 1344px;
+    max-width: 1200px;
     width: 100%;
-    height: 816px;
+    height: 730px;
     aspect-ratio: 16 / 9;
-    padding: 0.7rem 0.1rem;
+    padding: 0.7rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
