@@ -1,7 +1,7 @@
 import type { ExperienceToRender, ProfileToRender } from "./types";
 import PptxGen from "pptxgenjs";
 import profileImg from './assets/profileImg.png';
-// import pinIcon from './assets/icons/pinIcon.svg';
+import pinIcon from '@/app/assets/icons/pinIcon.svg';
 
 export function OnePagerCvPpt(profile: ProfileToRender) {
     let pptx = new PptxGen();
@@ -19,6 +19,7 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
         color: "000000",
         fontFace: "NoAAftenScreen"
     });
+
 
     // Image from remote URL
     slide.addImage({ 
@@ -97,7 +98,7 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
     });
 
     slide.addImage({
-        path: "public/pinIcon.svg", 
+        path: pinIcon, 
         x: '9.1%',
         y: '87.8%',
         w: '1.3%',
@@ -241,7 +242,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
 
         slide.addText(experience.startDate || '01.01', {
             x: '46%',
-            y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[0]}%`,
             w: '5%',
             h: '2%',
             fontSize: 8,
@@ -251,7 +252,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
         
         slide.addText('-', {
             x: '48.9%',
-            y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[0]}%`,
             w: '2%',
             h: '2%',
             fontSize: 8,
@@ -261,7 +262,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
 
         slide.addText(experience.endDate || '01.01', {
             x: '49.5%',
-            y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[0]}%`,
             w: '5%',
             h: '2%',
             fontSize: 8,
@@ -271,7 +272,7 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
         
         slide.addText(':', {
             x: '52.2%',
-            y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[0]}%`,
             w: '5%',
             h: '2%',
             fontSize: 8,
@@ -281,18 +282,17 @@ function experiences(slide: PptxGen.Slide, profile: ProfileToRender) {
         
         slide.addText(experience.projectName || 'Prosjektnavn, Kunde', {
             x: '53%',
-            y: `${ypoint[0]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[0]}%`,
             w: '40%',
             h: '2%',
             fontSize: 8,
             color: "000000",
             fontFace: "NoAAftenScreenBold",
-            // charSpacing: 1.05,
         });
 
         slide.addText(experience.description || 'Legg til tekst', {
             x: '46%',
-            y: `${ypoint[1]}%`, // Last number decides the distance between the experiences
+            y: `${ypoint[1]}%`,
             w: '50%',
             h: '10%',
             fontSize: 8,
@@ -348,7 +348,7 @@ function qualifications(slide: PptxGen.Slide, profile: ProfileToRender) {
 
         // TODO: max word/charachters
         slide.addText(qualification.detail || 'Beskrivelse, sted og/eller år', {
-            x: `${getDetailXpoint(qualification.label)}%`, // if qualification.label is longer than 6 letters then the needs to be adjusted
+            x: `${getDetailXpoint(qualification.label)}%`,
             y: `${67 + index * 4}%`,
             w: '45%',
             h: '3%',
