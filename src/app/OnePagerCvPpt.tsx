@@ -97,7 +97,7 @@ export function OnePagerCvPpt(profile: ProfileToRender) {
     });
 
     slide.addImage({
-        path: "public/assets/icons/pinIcon.svg", 
+        path: "public/pinIcon.svg", 
         x: '9.1%',
         y: '87.8%',
         w: '1.3%',
