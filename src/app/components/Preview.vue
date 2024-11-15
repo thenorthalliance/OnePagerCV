@@ -54,7 +54,7 @@
 import { reactive, provide, watch, ref } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
-import FormatDropdown from './FormatDropdown.vue';
+// import FormatDropdown from './FormatDropdown.vue';
 import HeaderWarning from './HeaderWarning.vue';
 import { ProfileCMS, ProfileToRender } from '../types';
 import { defineQuery } from "next-sanity";
