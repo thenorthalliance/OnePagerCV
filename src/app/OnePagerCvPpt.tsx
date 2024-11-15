@@ -1,7 +1,7 @@
 import type { ExperienceToRender, ProfileToRender } from "./types";
 import PptxGen from "pptxgenjs";
 import profileImg from './assets/profileImg.png';
-import pinIcon from '@/app/assets/icons/pinIcon.svg';
+import pinIcon from '@/app/assets/icons/pinIcon.png';
 
 export function OnePagerCvPpt(profile: ProfileToRender) {
     let pptx = new PptxGen();
