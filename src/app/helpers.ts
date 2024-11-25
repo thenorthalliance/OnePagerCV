@@ -1,25 +1,4 @@
 
-/* export const transformProfileToRender = (profile: Profile): ProfileToRender => {
-  return {
-    firstName: profile.firstName,
-    lastName: profile.lastName,
-    profilePicture: profile.profilePicture,
-    birthYear: profile.birthYear,
-    placeOfResidence: profile.placeOfResidence,
-    title: profile.title,
-    skills: profile.skills,
-    bio: profile.bio.find((text) => text.isSelected)?.richText || "",
-    experiences: profile.experiences.map((experience) => ({
-      projectName: experience.projectName,
-      startDate: experience.startDate,
-      endDate: experience.endDate,
-      description:
-        experience.description.find((text) => text.isSelected)?.richText || "",
-    })),
-    qualifications: profile.qualifications,
-  };
-}; */
-
 import { ProfileToRender } from "./types";
 
 export const formatDate = (date: Date): string => {
@@ -30,9 +9,14 @@ export const formatDate = (date: Date): string => {
   .replace(/\//g, "."); //replace / with .
 };
 
+// Clear default text on focus if it's still set
+export const clearDefaultText = (elementRef: HTMLElement | null, defaultValue: string) => {
+  if (elementRef && elementRef.innerText === defaultValue) {
+    elementRef.innerText = ''; // Clear the default text
+  }
+};
 
 export const requiredFields = ( profile: ProfileToRender) => {
-    // const profile = inject<ProfileToRender>('profile');
     let warnings:string[] = [];
     
     if (!profile?.name) {

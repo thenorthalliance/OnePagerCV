@@ -12,18 +12,21 @@
         
             <h1
             contenteditable="true"
+            id="nameField"
             ref="nameField"
-            @keypress="clearDefaultText('name')"
-            @blur="updateAndRestoreDefaultText('name', $event)"
-            class="editable-text"
+            @keypress="clearDefaultText(nameField, 'Fornavn Etternavn')"
+            @blur="updateAndRestoreDefaultText(nameField, 'Fornavn Etternavn')"
+           class="editable-text"
+
             >
             {{ (profile?.name || "Fornavn Etternavn") }}
             </h1>
             <h2
             contenteditable="true"
+            id="jobTitleField"
             ref="jobTitleField"
-            @keypress="clearDefaultText('jobTitle')"
-            @blur="updateAndRestoreDefaultText('jobTitle', $event)"
+            @keypress="clearDefaultText(jobTitleField, 'Tittel')"
+            @blur="updateAndRestoreDefaultText(jobTitleField, 'Tittel')"
             class="editable-text"
             >
             {{ profile?.jobTitle || "Tittel" }}
@@ -41,9 +44,13 @@
 import { ref, inject } from "vue";
 import ProfilePicture from "./ProfilePicture.vue";
 import { ProfileToRender } from "../../types";
+import { clearDefaultText } from "../../helpers";
 const profile = inject<ProfileToRender>("profile");
 const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+// Refs for the editable fields
+const nameField = ref<HTMLElement | null>(null);
+const jobTitleField = ref<HTMLElement | null>(null);
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {
@@ -51,36 +58,18 @@ const updateProfile = (field: string, value: any) => {
   }
 };
 
-// Refs for the editable fields
-const nameField = ref<HTMLElement | null>(null);
-const jobTitleField = ref<HTMLElement | null>(null);
-
-// Clear default text on focus if it's still set
-const clearDefaultText = (field: string) => {
-  const element = field === 'name' ? nameField.value : jobTitleField.value;
-  if (element) {
-    const defaultValue = field === 'name' ? 'Fornavn Etternavn' : 'Tittel';
-    if (element.innerText === defaultValue) {
-      element.innerText = ''; // Clear the default text
+const updateAndRestoreDefaultText = (elementRef: HTMLElement | null, defaultValue: string) => {
+    const fieldName = elementRef?.id.replace('Field', ''); // This will give us the field name 
+    if (elementRef) {
+        const newValue = elementRef.innerText.trim();
+        // Update the profile if there's a new value
+        if (newValue) {
+            updateProfile(fieldName ?? 'noElement', newValue);  // We can pass a field identifier as needed
+        } else {
+            // Restore default text if the field is empty
+            elementRef.innerText = defaultValue;
+        }
     }
-  }
-};
-
-const updateAndRestoreDefaultText = (field: string, event: Event) => {
-  const element = event.target as HTMLElement;
-  const newValue = element.innerText.trim();
-
-  // Update the profile
-  if (newValue) {
-    updateProfile(field, newValue);
-  } else {
-    // Restore default text if the field is empty
-    if (field === 'name') {
-      element.innerText = 'Fornavn Etternavn';
-    } else if (field === 'jobTitle') {
-      element.innerText = 'Tittel';
-    }
-  }
 };
 
 </script>
@@ -113,5 +102,6 @@ const updateAndRestoreDefaultText = (field: string, event: Event) => {
     h2 {
         color: blue;
     }
+    
 
 </style>

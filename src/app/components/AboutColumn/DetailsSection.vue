@@ -9,8 +9,10 @@
         <div class="title-field">
           <h3
           contenteditable="true"
-          @blur="
-            updateProfile('descriptionTitle', ($event.target as HTMLElement)?.innerText)"
+          id="descriptionTitleField"
+          ref="descriptionTitleField"
+          @keypress="clearDefaultText(descriptionTitleField, 'Navn')"
+          @blur="updateAndRestoreDefaultText(descriptionTitleField, 'Navn')"
           class="editable-text about-title"
           >Om {{ profile?.name || "Navn" }}</h3>
           <img 
@@ -22,8 +24,10 @@
   
         <p
           contenteditable="true"
-          @blur="
-            updateProfile('description', ($event.target as HTMLElement)?.innerText)"
+          id="descriptionField"
+          ref="descriptionField"
+          @keypress="clearDefaultText(descriptionField, 'Legg til tekst')"
+          @blur="updateAndRestoreDefaultText(descriptionField, 'Legg til tekst')"
           class="editable-text"
         >
           {{ profile?.description || "Legg til tekst" }}
@@ -36,7 +40,10 @@
           <span>f. </span>
           <span
             contenteditable="true"
-            @blur="updateProfile('birthYear', ($event.target as HTMLElement)?.innerText)"
+            id="birthYearField"
+            ref="birthYearField"
+            @keypress="clearDefaultText(birthYearField, 'ÅÅÅÅ')"
+            @blur="updateAndRestoreDefaultText(birthYearField, 'ÅÅÅÅ')"
             class="editable-text"
             >{{ profile?.birthYear || "ÅÅÅÅ" }}</span
           >
@@ -50,9 +57,10 @@
           />
           <span
             contenteditable="true"
-            @blur="
-              updateProfile('residence', ($event.target as HTMLElement)?.innerText)
-            "
+            id="residenceField"
+            ref="residenceField"
+            @keypress="clearDefaultText(residenceField, 'Bosted')"
+            @blur="updateAndRestoreDefaultText(residenceField, 'Bosted')"
             class="residence editable-text"
             >{{
               profile?.residence || "Bosted"
@@ -66,15 +74,34 @@
 <script setup lang="ts">
 import { ref, inject } from "vue";
 import { ProfileToRender } from "../../types";
+import { clearDefaultText } from "../../helpers";
 const profile = inject<ProfileToRender>("profile");
 const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
-
+// Refs for the editable fields
+const descriptionTitleField = ref<HTMLElement | null>(null);
+const descriptionField = ref<HTMLElement | null>(null);
+const birthYearField = ref<HTMLElement | null>(null);
+const residenceField = ref<HTMLElement | null>(null);
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {
     updateProfileField(field, value);
   }
+};
+
+const updateAndRestoreDefaultText = (elementRef: HTMLElement | null, defaultValue: string) => {
+    const fieldName = elementRef?.id.replace('Field', ''); // This will give us the field name 
+    if (elementRef) {
+        const newValue = elementRef.innerText.trim();
+        // Update the profile if there's a new value
+        if (newValue) {
+            updateProfile(fieldName ?? 'noElement', newValue);  // We can pass a field identifier as needed
+        } else {
+            // Restore default text if the field is empty
+            elementRef.innerText = defaultValue;
+        }
+    }
 };
 </script>
 
