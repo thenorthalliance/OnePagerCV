@@ -2,26 +2,27 @@
   <div>
     <div class="page-header">
       <h1 class="tool-name">1PCV</h1>
+
       <div>
         <div v-if="hasWarnings && warningsList.length > 0">
           <HeaderWarning :warnings="warningsList"/>
         </div>
-        <div v-else >
+        <div v-else class="header-middle-section" >
           <p class="header-text">
-            Fyll inn informasjon hvor det er ønskelig og når "www.noaignite.com" på bunnen av siden forsvinner
-            (når du må skrolle for å se url-adressa) så er det for mye tekst i OnePageren. Etter at du trykker på 
-            Export-knappen må du velge at Paper size til A3. Deretter må du beskjære pdf-en etter å ha lagt den inn i powerpointen. 
+            Fyll inn informasjon. Og når "www.noaignite.com" forsvinner (når du må skrolle for å se noaignite sin url-adresse) 
+            så er det for mye tekst i OnePageren. 
           </p><p class="strong">NB! Fyll ut alle felt for å eksportere pdf-en.</p>
         </div>
       </div>
+
       <div class="format-selector">
-        <FormatDropdown />
+        <!-- <FormatDropdown /> -->
         <button 
           @click="handlePrint" 
           class="export-btn" 
           :disabled="warningsList.length > 0 && hasWarnings" 
         >
-          Export
+          Eksporter PowerPoint
         </button>
       </div>
     </div>
@@ -52,13 +53,13 @@
 import { reactive, provide, watch, ref } from 'vue';
 import AboutColumn from './AboutColumn/AboutColumn.vue';
 import ExperienceColumn from './ExperienceColumn/ExperienceColumn.vue';
-import FormatDropdown from './FormatDropdown.vue';
+// import FormatDropdown from './FormatDropdown.vue'; // Can be implemented if the user should be able to select format between PDF and PowerPoint
 import HeaderWarning from './HeaderWarning.vue';
 import { ProfileCMS, ProfileToRender } from '../types';
-
 import { defineQuery } from "next-sanity";
-import  { client }  from  "../../sanity/client";
+import { client }  from  "../../sanity/client";
 import { requiredFields } from '../helpers';
+import { OnePagerCvPpt } from '../OnePagerCvPpt';
 // import  imageUrlBuilder  from  "@sanity/image-url"
 // import { useSanityClient } from 'vue-sanity';
 // const  builder = imageUrlBuilder(client);
@@ -123,7 +124,6 @@ let newProfile = reactive<ProfileToRender>({
   qualifications: [
     { label: '', detail: '' },
     { label: '', detail: '' },
-    { label: '', detail: '' },
   ],
 });
 
@@ -149,7 +149,6 @@ watch(profile, () => {
 watch(profile, () => {
     warningsList.value = requiredFields(profile);
     hasWarnings.value = warningsList.value.length > 0 ? true : false;
-    console.log('Warnings:', hasWarnings.value);
   },
   { deep: true } // Watch deeply to react to changes in nested properties
 );
@@ -194,8 +193,11 @@ const handlePrint = () => {
         
       
     });
-    window.print()
-  }
+
+    // The line below is relevant if the option to print becomes relevant
+    // window.print()
+    OnePagerCvPpt(profile);
+  } //end of else to check if there are warnings
  
 }
 
@@ -208,8 +210,6 @@ const handlePrint = () => {
 
   @page {
     margin: 0;
-    /* size: legal; */
-    /* orientation: landscape; */
   }
 
   #app {
@@ -240,11 +240,11 @@ const handlePrint = () => {
 }
 
 #layout {
-    max-width: 1344px;
+    max-width: 1200px;
     width: 100%;
-    height: 816px;
+    height: 730px;
     aspect-ratio: 16 / 9;
-    padding: 0.8rem 1.5rem;
+    padding: 0.7rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -261,42 +261,42 @@ const handlePrint = () => {
     justify-content: space-between;
     width: 1300px;
     padding: 1.5rem 0;
-    gap: 1rem;
+    gap: 2.5rem;
   }
 
   .tool-name {
     font-family: NoAAftenScreenBold;
-    color: white;
+    color: var(--Black, #323231);
     font-size: 2rem;
     text-align: center;
     margin: 2rem 0 0 0;
   }
-
-  .header-text {
-    display: flex;
-    flex-direction: row;
+  .header {
     align-self: flex-start;
-    color: white;
+  }
+
+  .header-middle-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .header-text {
+    color: var(--Black, #323231);
     font-size: 1rem;
-    margin: 0 2rem;
   }
 
   .strong {
     font-family: NoAAftenScreenBold;
     font-size: 1rem;
-    color: #fff;
+    color: var(--Black, #323231);
   }
 
-  .header {
-    align-self: flex-start;
-  }
 
   .main {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    
     gap: 1.5rem;
     align-self: stretch;
   }
@@ -306,20 +306,28 @@ const handlePrint = () => {
   }
 
   .export-btn {
-    height: 2.5rem;
+    height: 3rem;
+    width: 8rem;
     background-color: #FFF;
+    border-color: 10px var(--Black, #323231);
     align-self: flex-end;
     color: #303030;
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
   }
+  .export-btn:hover {
+    background-color: var(--Light-Blue, #DDE4FF);
+  }
+  .export-btn:active {
+    color: #FFF;
+    border-color: var(--Crazy-Blue, #2A45EE);
+    background-color: var(--Crazy-Blue, #2A45EE);
+  }
 
   .export-btn:disabled {
-    background-color: #868686;
     color: #464646;
-    font-size: 0.8rem;
-    font-weight: 500;
+    background-color: #868686;
     border-color: #464646;
     cursor: not-allowed;
   }

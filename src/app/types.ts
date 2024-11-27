@@ -34,14 +34,14 @@ export interface ProfileCMS extends ProfileToRender {
   _type: string;
 }
 
-interface ExperienceToRender {
+export interface ExperienceToRender {
   projectName: string;
   startDate?: string;
   endDate?: string;
   description: string;
 }
 
-interface LabelWithDetail {
+export interface LabelWithDetail {
   label: string;
   detail: string;
 }

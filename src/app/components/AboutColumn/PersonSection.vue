@@ -12,14 +12,21 @@
         
             <h1
             contenteditable="true"
-            @blur="updateProfile('name', ($event.target as HTMLElement)?.innerText)"
-            class="editable-text"
+            id="nameField"
+            ref="nameField"
+            @keypress="clearDefaultText(nameField, 'Fornavn Etternavn')"
+            @blur="updateAndRestoreDefaultText(nameField, 'Fornavn Etternavn')"
+           class="editable-text"
+
             >
             {{ (profile?.name || "Fornavn Etternavn") }}
             </h1>
             <h2
             contenteditable="true"
-            @blur="updateProfile('jobTitle', ($event.target as HTMLElement)?.innerText)"
+            id="jobTitleField"
+            ref="jobTitleField"
+            @keypress="clearDefaultText(jobTitleField, 'Tittel')"
+            @blur="updateAndRestoreDefaultText(jobTitleField, 'Tittel')"
             class="editable-text"
             >
             {{ profile?.jobTitle || "Tittel" }}
@@ -37,15 +44,34 @@
 import { ref, inject } from "vue";
 import ProfilePicture from "./ProfilePicture.vue";
 import { ProfileToRender } from "../../types";
+import { clearDefaultText } from "../../helpers";
 const profile = inject<ProfileToRender>("profile");
 const updateProfileField = inject<(field: string, value: any) => void>("updateProfileField");
 const editingMode = ref(false); // To track if the user is in editing mode
+// Refs for the editable fields
+const nameField = ref<HTMLElement | null>(null);
+const jobTitleField = ref<HTMLElement | null>(null);
 
 const updateProfile = (field: string, value: any) => {
   if (updateProfileField) {
     updateProfileField(field, value);
   }
 };
+
+const updateAndRestoreDefaultText = (elementRef: HTMLElement | null, defaultValue: string) => {
+    const fieldName = elementRef?.id.replace('Field', ''); // This will give us the field name 
+    if (elementRef) {
+        const newValue = elementRef.innerText.trim();
+        // Update the profile if there's a new value
+        if (newValue) {
+            updateProfile(fieldName ?? 'noElement', newValue);  // We can pass a field identifier as needed
+        } else {
+            // Restore default text if the field is empty
+            elementRef.innerText = defaultValue;
+        }
+    }
+};
+
 </script>
 
 <style scoped>
@@ -76,5 +102,6 @@ const updateProfile = (field: string, value: any) => {
     h2 {
         color: blue;
     }
+    
 
 </style>

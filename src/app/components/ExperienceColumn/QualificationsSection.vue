@@ -158,7 +158,7 @@ function removeQualification(index: number) {
     li {
         display: flex;
         column-gap: 0.5em;
-        margin-bottom: 1rem;    
+        margin-bottom: 0.2rem;    
     }
     h3 {
         letter-spacing: -0.48px;
