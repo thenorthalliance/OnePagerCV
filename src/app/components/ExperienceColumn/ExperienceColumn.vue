@@ -11,8 +11,6 @@
 <script setup lang="ts">
 import ProjectDescription from './ProjectDescription.vue';
 import QualificationsSection from './QualificationsSection.vue';
-
-
 </script>
 
 <style scoped>
