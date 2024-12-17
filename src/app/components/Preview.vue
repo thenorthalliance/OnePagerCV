@@ -65,7 +65,7 @@ import { OnePagerCvPpt } from '../OnePagerCvPpt';
 // const  builder = imageUrlBuilder(client);
 
 
-const toogleWriteToSanity = false;
+const toogleWriteToSanity = true;
 
 // Initialize `hasWarnings` as undefined
 const hasWarnings = ref<boolean | undefined>(undefined);
@@ -80,7 +80,7 @@ const EMPLOYEES_QUERY = defineQuery(`*[
 }
 `);
 
-
+//// relevant for image handling
 // const { projectId, dataset } = client.config();
 // const urlFor = ( source: SanityImageSource) =>
 //   projectId && dataset
@@ -156,46 +156,49 @@ watch(profile, () => {
 // Function to trigger the print dialog
 const handlePrint = () => {
   warningsList.value = requiredFields(profile); // Refresh warnings on button click
+
   if (warningsList.value.length > 0) {
     hasWarnings.value = true; // Enable warnings to display the list of missing fields
-  } else {
-
+  } else {// if there are no warnings, proceed to print/powerpoint export
     // Check if employee already exists in Sanity
     client.fetch(EMPLOYEES_QUERY).then((data) => {
       for (const employee of data) {
         if (employee.name === profile.name) {
-          // console.log('Employee already exists in Sanity', employee._id);
           const profileToSanity: ProfileCMS = {...profile, _id: employee._id, _type: 'employee' };
 
+          // Toogle-variable to decide if the profile should be updated or created in Sanity
           if(toogleWriteToSanity)
           {
             // Send profile to Sanity
             client.createOrReplace(profileToSanity).then((res) => {
               console.log('Profile sent to Sanity:', res);
+            }).catch((err) => {
+              console.error('Error updating profile to Sanity:', err);
             });
           }
           return;
 
-        } else {
-          console.log('Employee does not exist in Sanity');
+        } else { // If employee does not already exist in Sanity
+          console.error('Employee does not exist in Sanity');
           const profileToSanity: ProfileCMS = {...profile, _id: undefined,  _type: 'employee' };
 
           if(toogleWriteToSanity)
           {
             client.create(profileToSanity).then((res) => {
               console.log('Profile sent to Sanity:', res);
+            }).catch((err) => {
+              console.error('Error sending new profile to Sanity:', err);
             });
           }
           return;
         }
       }
-    
-        
-      
     });
 
     // The line below is relevant if the option to print becomes relevant
     // window.print()
+
+    // Call the function to generate the PowerPoint
     OnePagerCvPpt(profile);
   } //end of else to check if there are warnings
  
